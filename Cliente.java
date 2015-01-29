@@ -7,6 +7,8 @@ public class Cliente {
 	private float saldo;
 	private String telefone;
 	
+	public Cliente (){}
+	
 	public Cliente(String nome, String cpf, String telefone) {
 		setNome(nome);
 		setCpf(cpf);

@@ -1,4 +1,5 @@
-import java.awt.EventQueue;
+//import java.awt.EventQueue;
+import java.util.ArrayList;
 
 import javax.swing.GroupLayout;
 import javax.swing.JDesktopPane;
@@ -9,6 +10,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.border.EmptyBorder;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
@@ -18,26 +20,21 @@ import java.awt.event.ActionEvent;
 public class TelaPrincipal extends JFrame {
 
 	private JPanel contentPane;
+	ArrayList< Cliente > clientes = new ArrayList< Cliente >();
+	private String textoBusca;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					TelaPrincipal frame = new TelaPrincipal();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
+	
+
+	public String getTextoBusca() {
+		return textoBusca;
 	}
 
-	/**
-	 * Create the frame.
-	 */
+
+	public void setTextoBusca(String textoBusca) {
+		this.textoBusca = textoBusca;
+	}
+
+
 	public TelaPrincipal() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 564, 451);
@@ -92,6 +89,7 @@ public class TelaPrincipal extends JFrame {
 				
 				telaCadCliente.setVisible(true);
 				
+				clientes.add(telaCadCliente.getNovoCliente());
 				
 				
 			}
@@ -103,19 +101,83 @@ public class TelaPrincipal extends JFrame {
 		JMenu mnNewMenu = new JMenu("Buscas");
 		menuBar.add(mnNewMenu);
 		
-		JMenuItem mntmNewMenuItem = new JMenuItem("Filme");
-		mnNewMenu.add(mntmNewMenuItem);
+		JMenuItem btBuscaFilmes = new JMenuItem("Filme");
+		mnNewMenu.add(btBuscaFilmes);
 		
-		JMenuItem mntmNewMenuItem_1 = new JMenuItem("CDs");
-		mnNewMenu.add(mntmNewMenuItem_1);
+		JMenuItem btBuscaCds = new JMenuItem("CDs");
+		mnNewMenu.add(btBuscaCds);
 		
-		JMenuItem mntmNewMenuItem_2 = new JMenuItem("Clientes");
-		mnNewMenu.add(mntmNewMenuItem_2);
+		JMenuItem btBuscaClientes = new JMenuItem("Clientes");
+		btBuscaClientes.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent evt) {
+				TelaBuscaCliente telaBuscaCliente = new TelaBuscaCliente();
+				
+				desktopPrincipal.add(telaBuscaCliente);
+				
+				telaBuscaCliente.setVisible(true);
+				
+				setTextoBusca(telaBuscaCliente.getTextoDigitado());
+				
+			}
+		});
+		
+		mnNewMenu.add(btBuscaClientes);
+		
+		
+		
 		
 		
 		
 	}
-
+	
+	
+	public static void main(String[] args) {
+		
+		
+		try {
+			
+			TelaPrincipal frame = new TelaPrincipal();
+			frame.setVisible(true);
+			
+		} catch (Exception e) {
+			
+			e.printStackTrace();
+			
+		}
+			
+		
+	}
+	
+	
+	
+	Cliente buscarNome(String nome){
+		
+		Cliente clienteBusca = new Cliente();
+		Cliente clienteAchado = new Cliente();
+		
+		int i = 0;
+		int j = clientes.size();
+		
+		clienteBusca = clientes.get(i);
+		
+		for(i = 1; i < j; i++ ){
+		
+			if(clienteBusca.getNome().equals(nome)){
+			
+				clienteAchado = clienteBusca;
+			
+			}
+			
+			clienteBusca = clientes.get(i);
+			
+		}
+		
+		
+		return clienteAchado;
+	}
+	
+	
 	
 }
 

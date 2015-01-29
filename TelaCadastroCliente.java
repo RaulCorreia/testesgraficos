@@ -1,4 +1,4 @@
-import java.awt.EventQueue;
+//import java.awt.EventQueue;
 
 import javax.swing.JInternalFrame;
 import javax.swing.GroupLayout;
@@ -18,26 +18,17 @@ public class TelaCadastroCliente extends JInternalFrame {
 	private String nome;
 	private String cpf;
 	private String telefone;
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					TelaCadastroCliente frame = new TelaCadastroCliente();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
+	Cliente novoCliente;
+	
+	
+	public Cliente getNovoCliente() {
+		return novoCliente;
 	}
 
-	/**
-	 * Create the frame.
-	 */
+
+
+
+
 	public TelaCadastroCliente() {
 		setEnabled(false);
 		setBounds(100, 30, 333, 335);
@@ -51,16 +42,16 @@ public class TelaCadastroCliente extends JInternalFrame {
 		campoTextoTel = new JTextField();
 		campoTextoTel.setColumns(10);
 		
-		JButton btnNewButton = new JButton("Ok");
+		JButton botaoOk = new JButton("Ok");
 		
-		btnNewButton.addActionListener(new ActionListener() {
+		botaoOk.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
 				
 				nome = campoTextoNome.getText();
 				cpf = campoTextoCpf.getText();
 				telefone = campoTextoTel.getText();
 				
-				Cliente novoCliente = new Cliente(nome, cpf, telefone);
+				novoCliente = new Cliente(nome, cpf, telefone);
 				
 				
 			}
@@ -73,9 +64,9 @@ public class TelaCadastroCliente extends JInternalFrame {
 		
 		JLabel lblTelefone = new JLabel("Telefone:");
 		
-		JButton btnNewButton_1 = new JButton("Cancelar");
+		JButton botaoCancelar = new JButton("Cancelar");
 		
-		btnNewButton_1.addActionListener(new ActionListener() {
+		botaoCancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
 				
 				TelaCadastroCliente.this.dispose();
@@ -109,9 +100,9 @@ public class TelaCadastroCliente extends JInternalFrame {
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addComponent(campoTextoTel, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 174, Short.MAX_VALUE)
 						.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
-							.addComponent(btnNewButton)
+							.addComponent(botaoOk)
 							.addPreferredGap(ComponentPlacement.RELATED, 54, Short.MAX_VALUE)
-							.addComponent(btnNewButton_1))
+							.addComponent(botaoCancelar))
 						.addComponent(campoTextoNome, GroupLayout.DEFAULT_SIZE, 174, Short.MAX_VALUE)
 						.addComponent(campoTextoCpf, GroupLayout.DEFAULT_SIZE, 174, Short.MAX_VALUE))
 					.addGap(65))
@@ -141,8 +132,8 @@ public class TelaCadastroCliente extends JInternalFrame {
 						.addComponent(lblTelefone))
 					.addGap(41)
 					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(btnNewButton_1)
-						.addComponent(btnNewButton))
+						.addComponent(botaoCancelar)
+						.addComponent(botaoOk))
 					.addContainerGap(36, Short.MAX_VALUE))
 		);
 		getContentPane().setLayout(groupLayout);
