@@ -75,6 +75,14 @@ public class TelaCadastroCliente extends JInternalFrame {
 		
 		JButton btnNewButton_1 = new JButton("Cancelar");
 		
+		btnNewButton_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent evt) {
+				
+				TelaCadastroCliente.this.dispose();
+				
+			}
+		});
+		
 		JLabel lblNewLabel = new JLabel("Ex: 12345678912");
 		
 		JLabel lblEx = new JLabel("Ex: 0012345678");
