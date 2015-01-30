@@ -2,13 +2,17 @@
 
 import javax.swing.JInternalFrame;
 import javax.swing.GroupLayout;
+import javax.swing.JOptionPane;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 
 
 public class TelaCadastroCliente extends JInternalFrame {
@@ -21,8 +25,45 @@ public class TelaCadastroCliente extends JInternalFrame {
 	Cliente novoCliente;
 	
 	
+	
+	
+	public String getNome() {
+		return nome;
+	}
+
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
+
+	public String getCpf() {
+		return cpf;
+	}
+
+
+	public void setCpf(String cpf) {
+		this.cpf = cpf;
+	}
+
+
+	public String getTelefone() {
+		return telefone;
+	}
+
+
+	public void setTelefone(String telefone) {
+		this.telefone = telefone;
+	}
+
+
 	public Cliente getNovoCliente() {
 		return novoCliente;
+	}
+
+
+	public void setNovoCliente(Cliente novoCliente) {
+		this.novoCliente = novoCliente;
 	}
 
 
@@ -30,9 +71,22 @@ public class TelaCadastroCliente extends JInternalFrame {
 
 
 	public TelaCadastroCliente() {
-		setEnabled(false);
-		setBounds(100, 30, 333, 335);
 		
+		//Ação ao mover a janela, voltar aonde estava
+		addComponentListener(new ComponentAdapter() {
+			
+			public void componentMoved(ComponentEvent arg0) {
+				setLocation(0, 0);
+			}
+		});
+		
+		//Reduz a barra
+		putClientProperty("JInternalFrame.isPalette", Boolean.TRUE); 
+		
+		setEnabled(false);
+		setBounds(0, 0, 547, 389);
+		
+		//Espaços de Texto
 		campoTextoNome = new JTextField();
 		campoTextoNome.setColumns(10);
 		
@@ -42,27 +96,38 @@ public class TelaCadastroCliente extends JInternalFrame {
 		campoTextoTel = new JTextField();
 		campoTextoTel.setColumns(10);
 		
-		JButton botaoOk = new JButton("Ok");
 		
-		botaoOk.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent evt) {
-				
-				nome = campoTextoNome.getText();
-				cpf = campoTextoCpf.getText();
-				telefone = campoTextoTel.getText();
-				
-				novoCliente = new Cliente(nome, cpf, telefone);
-				
-				
-			}
-		});
-		
-		
+		//Labels
 		JLabel lblNome = new JLabel("Nome:");
 		
 		JLabel lblCpf = new JLabel("Cpf:");
 		
 		JLabel lblTelefone = new JLabel("Telefone:");
+		
+		JLabel lblExempCpf = new JLabel("Ex: 12345678912");
+		
+		JLabel lblExempTelefone = new JLabel("Ex: 0012345678");
+		
+		
+		//Botoes
+		JButton botaoCadastrar = new JButton("Cadastrar");
+		
+		botaoCadastrar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent evt) {
+				
+				setNome(campoTextoNome.getText());
+				setCpf(campoTextoCpf.getText());
+				setTelefone(campoTextoTel.getText());
+				
+				novoCliente = new Cliente(nome, cpf, telefone);
+				
+				JOptionPane.showMessageDialog(null,"Cliente Cadastrado Com Sucesso!");
+				
+				TelaCadastroCliente.this.dispose();
+				
+			}
+		});
+		
 		
 		JButton botaoCancelar = new JButton("Cancelar");
 		
@@ -74,69 +139,72 @@ public class TelaCadastroCliente extends JInternalFrame {
 			}
 		});
 		
-		JLabel lblNewLabel = new JLabel("Ex: 12345678912");
 		
-		JLabel lblEx = new JLabel("Ex: 0012345678");
 		
-		GroupLayout groupLayout = new GroupLayout(getContentPane());
-		groupLayout.setHorizontalGroup(
-			groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(groupLayout.createSequentialGroup()
-					.addGap(113)
-					.addComponent(lblNewLabel)
-					.addContainerGap(119, Short.MAX_VALUE))
-				.addGroup(groupLayout.createSequentialGroup()
+		
+		//Alinhamento do Layout
+		GroupLayout lLayoutTelaCadCliente = new GroupLayout(getContentPane());
+		lLayoutTelaCadCliente.setHorizontalGroup(
+			lLayoutTelaCadCliente.createParallelGroup(Alignment.LEADING)
+				.addGroup(lLayoutTelaCadCliente.createSequentialGroup()
 					.addGap(19)
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
-							.addGroup(groupLayout.createSequentialGroup()
+					.addGroup(lLayoutTelaCadCliente.createParallelGroup(Alignment.LEADING)
+						.addGroup(lLayoutTelaCadCliente.createParallelGroup(Alignment.TRAILING)
+							.addGroup(lLayoutTelaCadCliente.createSequentialGroup()
 								.addComponent(lblNome)
 								.addGap(18))
-							.addGroup(groupLayout.createSequentialGroup()
+							.addGroup(lLayoutTelaCadCliente.createSequentialGroup()
 								.addComponent(lblTelefone)
 								.addPreferredGap(ComponentPlacement.RELATED)))
 						.addComponent(lblCpf))
 					.addGap(4)
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addComponent(campoTextoTel, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 174, Short.MAX_VALUE)
-						.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
-							.addComponent(botaoOk)
-							.addPreferredGap(ComponentPlacement.RELATED, 54, Short.MAX_VALUE)
-							.addComponent(botaoCancelar))
-						.addComponent(campoTextoNome, GroupLayout.DEFAULT_SIZE, 174, Short.MAX_VALUE)
-						.addComponent(campoTextoCpf, GroupLayout.DEFAULT_SIZE, 174, Short.MAX_VALUE))
+					.addGroup(lLayoutTelaCadCliente.createParallelGroup(Alignment.TRAILING)
+						.addComponent(campoTextoNome, GroupLayout.DEFAULT_SIZE, 394, Short.MAX_VALUE)
+						.addGroup(Alignment.LEADING, lLayoutTelaCadCliente.createParallelGroup(Alignment.TRAILING, false)
+							.addComponent(campoTextoCpf, Alignment.LEADING)
+							.addComponent(campoTextoTel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 243, Short.MAX_VALUE)))
 					.addGap(65))
-				.addGroup(groupLayout.createSequentialGroup()
-					.addGap(114)
-					.addComponent(lblEx)
-					.addContainerGap(124, Short.MAX_VALUE))
+				.addGroup(lLayoutTelaCadCliente.createSequentialGroup()
+					.addGap(157)
+					.addComponent(lblExempTelefone)
+					.addContainerGap(295, Short.MAX_VALUE))
+				.addGroup(lLayoutTelaCadCliente.createSequentialGroup()
+					.addGap(154)
+					.addComponent(lblExempCpf)
+					.addContainerGap(292, Short.MAX_VALUE))
+				.addGroup(Alignment.TRAILING, lLayoutTelaCadCliente.createSequentialGroup()
+					.addContainerGap(161, Short.MAX_VALUE)
+					.addComponent(botaoCadastrar)
+					.addGap(113)
+					.addComponent(botaoCancelar)
+					.addGap(137))
 		);
-		groupLayout.setVerticalGroup(
-			groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(groupLayout.createSequentialGroup()
+		lLayoutTelaCadCliente.setVerticalGroup(
+			lLayoutTelaCadCliente.createParallelGroup(Alignment.LEADING)
+				.addGroup(lLayoutTelaCadCliente.createSequentialGroup()
 					.addGap(53)
-					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+					.addGroup(lLayoutTelaCadCliente.createParallelGroup(Alignment.BASELINE)
 						.addComponent(campoTextoNome, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE)
 						.addComponent(lblNome))
 					.addGap(18)
-					.addComponent(lblNewLabel)
+					.addComponent(lblExempCpf)
 					.addGap(3)
-					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+					.addGroup(lLayoutTelaCadCliente.createParallelGroup(Alignment.BASELINE)
 						.addComponent(campoTextoCpf, GroupLayout.PREFERRED_SIZE, 27, GroupLayout.PREFERRED_SIZE)
 						.addComponent(lblCpf))
 					.addGap(19)
-					.addComponent(lblEx)
+					.addComponent(lblExempTelefone)
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+					.addGroup(lLayoutTelaCadCliente.createParallelGroup(Alignment.BASELINE)
 						.addComponent(campoTextoTel, GroupLayout.PREFERRED_SIZE, 27, GroupLayout.PREFERRED_SIZE)
 						.addComponent(lblTelefone))
-					.addGap(41)
-					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+					.addGap(68)
+					.addGroup(lLayoutTelaCadCliente.createParallelGroup(Alignment.BASELINE)
 						.addComponent(botaoCancelar)
-						.addComponent(botaoOk))
-					.addContainerGap(36, Short.MAX_VALUE))
+						.addComponent(botaoCadastrar))
+					.addContainerGap(63, Short.MAX_VALUE))
 		);
-		getContentPane().setLayout(groupLayout);
+		getContentPane().setLayout(lLayoutTelaCadCliente);
 
 	}
 }

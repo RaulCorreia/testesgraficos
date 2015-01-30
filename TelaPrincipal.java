@@ -11,6 +11,7 @@ import javax.swing.JPanel;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.border.EmptyBorder;
 
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
@@ -19,10 +20,12 @@ import java.awt.event.ActionEvent;
 
 public class TelaPrincipal extends JFrame {
 
-	private JPanel contentPane;
+	private JPanel telaPrincipal;
 	ArrayList< Cliente > clientes = new ArrayList< Cliente >();
+	ArrayList< Cds > listaCds = new ArrayList< Cds >();
+	ArrayList< Filmes > listaFilmes = new ArrayList< Filmes >();
 	private String textoBusca;
-
+	
 	
 
 	public String getTextoBusca() {
@@ -36,52 +39,80 @@ public class TelaPrincipal extends JFrame {
 
 
 	public TelaPrincipal() {
+		
+		//Nao Pode Redimensionar
+		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 564, 451);
 		
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setContentPane(contentPane);
+		//Criação do PainelPrincipal
+		telaPrincipal = new JPanel();
+		telaPrincipal.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(telaPrincipal);
 		
-		
+		//Criação do Desktop
 		JDesktopPane desktopPrincipal = new JDesktopPane();
 		
-		GroupLayout gl_contentPane = new GroupLayout(contentPane);
-		gl_contentPane.setHorizontalGroup(
-			gl_contentPane.createParallelGroup(Alignment.LEADING)
-				.addComponent(desktopPrincipal, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 538, Short.MAX_VALUE)
-		);
-		gl_contentPane.setVerticalGroup(
-			gl_contentPane.createParallelGroup(Alignment.LEADING)
-				.addComponent(desktopPrincipal, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 382, Short.MAX_VALUE)
-		);
 		
-		contentPane.setLayout(gl_contentPane);
-		
+		//Barra de Menus
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
 		
-		JMenu mnLocadora = new JMenu("Locadora");
-		menuBar.add(mnLocadora);
 		
-		JMenuItem mntmNewMenuItem_3 = new JMenuItem("Aluguel");
-		mnLocadora.add(mntmNewMenuItem_3);
+		//Menu Locadora e submenus
+		JMenu menuLocadora = new JMenu("Locadora");
+		menuBar.add(menuLocadora);
 		
-		JMenuItem mntmNewMenuItem_4 = new JMenuItem("Reservar");
-		mnLocadora.add(mntmNewMenuItem_4);
+		JMenuItem subMenuAluguel = new JMenuItem("Aluguel");
+		menuLocadora.add(subMenuAluguel);
 		
-		JMenu mnCadastros = new JMenu("Cadastros");
-		menuBar.add(mnCadastros);
+		JMenuItem subMenuReservar = new JMenuItem("Reservar");
+		menuLocadora.add(subMenuReservar);
 		
-		JMenuItem mntmFilmes = new JMenuItem("Filmes");
-		mnCadastros.add(mntmFilmes);
 		
-		JMenuItem mntmCds = new JMenuItem("CDs");
-		mnCadastros.add(mntmCds);
+		//Menu Cadastros e submenus
+		JMenu menuCadastros = new JMenu("Cadastros");
+		menuBar.add(menuCadastros);
 		
-		JMenuItem mntmClientes = new JMenuItem("Clientes");
-		mntmClientes.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		
+		JMenuItem subMenuCadFilmes = new JMenuItem("Filmes");
+		subMenuCadFilmes.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent evt) {
+				
+				TelaCadastroFilmes telaCadFilmes = new TelaCadastroFilmes();
+				
+				desktopPrincipal.add(telaCadFilmes);
+				
+				telaCadFilmes.setVisible(true);
+				
+				listaFilmes.add(telaCadFilmes.getNovoFilme());
+				
+			}
+		});
+		menuCadastros.add(subMenuCadFilmes);
+		
+		
+		JMenuItem subMenuCadCds = new JMenuItem("CDs");
+		subMenuCadCds.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent evt) {
+				
+				TelaCadastroCds telaCadCds = new TelaCadastroCds();
+				
+				desktopPrincipal.add(telaCadCds);
+				
+				telaCadCds.setVisible(true);
+				
+				listaCds.add(telaCadCds.getNovoCd());
+				
+			}
+		});
+		menuCadastros.add(subMenuCadCds);
+		
+		
+		JMenuItem subMenuCadClientes = new JMenuItem("Clientes");
+		subMenuCadClientes.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent evt) {
+				
 				
 				TelaCadastroCliente telaCadCliente = new TelaCadastroCliente();
 				
@@ -94,21 +125,21 @@ public class TelaPrincipal extends JFrame {
 				
 			}
 		});
+		menuCadastros.add(subMenuCadClientes);
 		
 		
-		mnCadastros.add(mntmClientes);
+		//Menu Busca e submenus
+		JMenu menuBuscas = new JMenu("Buscas");
+		menuBar.add(menuBuscas);
 		
-		JMenu mnNewMenu = new JMenu("Buscas");
-		menuBar.add(mnNewMenu);
+		JMenuItem subMenuBuscaFilmes = new JMenuItem("Filme");
+		menuBuscas.add(subMenuBuscaFilmes);
 		
-		JMenuItem btBuscaFilmes = new JMenuItem("Filme");
-		mnNewMenu.add(btBuscaFilmes);
+		JMenuItem subMenuBuscaCds = new JMenuItem("CDs");
+		menuBuscas.add(subMenuBuscaCds);
 		
-		JMenuItem btBuscaCds = new JMenuItem("CDs");
-		mnNewMenu.add(btBuscaCds);
-		
-		JMenuItem btBuscaClientes = new JMenuItem("Clientes");
-		btBuscaClientes.addActionListener(new ActionListener() {
+		JMenuItem subMenuBuscaClientes = new JMenuItem("Clientes");
+		subMenuBuscaClientes.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent evt) {
 				TelaBuscaCliente telaBuscaCliente = new TelaBuscaCliente();
@@ -121,15 +152,29 @@ public class TelaPrincipal extends JFrame {
 				
 			}
 		});
+		menuBuscas.add(subMenuBuscaClientes);
 		
-		mnNewMenu.add(btBuscaClientes);
 		
 		
+		//Alinhamento do Layout da Tela Principal
+		GroupLayout layoutPrincipal = new GroupLayout(telaPrincipal);
+		layoutPrincipal.setHorizontalGroup(
+			layoutPrincipal.createParallelGroup(Alignment.LEADING)
+				.addComponent(desktopPrincipal, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 538, Short.MAX_VALUE)
+		);
+		layoutPrincipal.setVerticalGroup(
+			layoutPrincipal.createParallelGroup(Alignment.LEADING)
+				.addComponent(desktopPrincipal, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 382, Short.MAX_VALUE)
+		);
+				
+		telaPrincipal.setLayout(layoutPrincipal);
 		
 		
 		
 		
 	}
+	
+	
 	
 	
 	public static void main(String[] args) {
@@ -151,6 +196,9 @@ public class TelaPrincipal extends JFrame {
 	
 	
 	
+	
+	
+	//Criação das Funções
 	Cliente buscarNome(String nome){
 		
 		Cliente clienteBusca = new Cliente();
