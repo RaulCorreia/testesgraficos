@@ -74,7 +74,7 @@ public class TelaBuscaCliente extends JInternalFrame {
 			
 			public void actionPerformed(ActionEvent evt) {
 				
-				textoDigitado = campoTextoCpf.getText();
+				setTextoDigitado(campoTextoCpf.getText());
 			}
 		});
 		
@@ -87,20 +87,23 @@ public class TelaBuscaCliente extends JInternalFrame {
 			
 			public void actionPerformed(ActionEvent evt) {
 				
-				textoDigitado = campoTextoNome.getText();
+				setTextoDigitado(campoTextoNome.getText());
 				
 			}
 		});
 		
 		
-		JButton btnFechar = new JButton("Fechar");
-		btnFechar.addActionListener(new ActionListener() {
+		
+		JButton btnCancelar = new JButton("Cancelar");
+		btnCancelar.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent evt) {
 				
 				TelaBuscaCliente.this.dispose();
 			}
 		});
+		
+		
 		
 		
 		
@@ -118,7 +121,7 @@ public class TelaBuscaCliente extends JInternalFrame {
 						.addComponent(campoTextoCpf)
 						.addComponent(btnBuscaPorCpf))
 					.addPreferredGap(ComponentPlacement.RELATED, 194, Short.MAX_VALUE)
-					.addComponent(btnFechar)
+					.addComponent(btnCancelar)
 					.addGap(21))
 				.addGroup(LayoutTelaBuscaCliente.createSequentialGroup()
 					.addGap(192)
@@ -144,7 +147,7 @@ public class TelaBuscaCliente extends JInternalFrame {
 					.addContainerGap(75, Short.MAX_VALUE))
 				.addGroup(LayoutTelaBuscaCliente.createSequentialGroup()
 					.addContainerGap(314, Short.MAX_VALUE)
-					.addComponent(btnFechar)
+					.addComponent(btnCancelar)
 					.addGap(23))
 		);
 		getContentPane().setLayout(LayoutTelaBuscaCliente);

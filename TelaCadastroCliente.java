@@ -80,6 +80,7 @@ public class TelaCadastroCliente extends JInternalFrame {
 			}
 		});
 		
+		
 		//Reduz a barra
 		putClientProperty("JInternalFrame.isPalette", Boolean.TRUE); 
 		

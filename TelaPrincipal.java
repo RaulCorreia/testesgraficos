@@ -133,9 +133,35 @@ public class TelaPrincipal extends JFrame {
 		menuBar.add(menuBuscas);
 		
 		JMenuItem subMenuBuscaFilmes = new JMenuItem("Filme");
+		subMenuBuscaFilmes.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				TelaBuscaFilmes telaBuscaFilmes = new TelaBuscaFilmes();
+				
+				desktopPrincipal.add(telaBuscaFilmes);
+				
+				telaBuscaFilmes.setVisible(true);
+				
+				setTextoBusca(telaBuscaFilmes.getTextoDigitado());
+				
+			}
+		});
 		menuBuscas.add(subMenuBuscaFilmes);
 		
 		JMenuItem subMenuBuscaCds = new JMenuItem("CDs");
+		subMenuBuscaCds.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				TelaBuscaCds telaBuscaCds = new TelaBuscaCds();
+				
+				desktopPrincipal.add(telaBuscaCds);
+				
+				telaBuscaCds.setVisible(true);
+				
+				setTextoBusca(telaBuscaCds.getTextoDigitado());
+				
+			}
+		});
 		menuBuscas.add(subMenuBuscaCds);
 		
 		JMenuItem subMenuBuscaClientes = new JMenuItem("Clientes");
