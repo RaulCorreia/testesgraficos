@@ -36,6 +36,36 @@ public class TelaPrincipal extends JFrame {
 	public void setTextoBusca(String textoBusca) {
 		this.textoBusca = textoBusca;
 	}
+	
+	public Cliente getClientes(int num) {
+		return clientes.get(num);
+	}
+
+
+	public void setClientes(Cliente cliente) {
+		this.clientes.add(cliente);
+	}
+
+
+	public Cds getListaCds(int num) {
+		return listaCds.get(num);
+	}
+
+
+	public void setListaCds(Cds cd) {
+		this.listaCds.add(cd);
+	}
+
+
+	public Filmes getListaFilmes(int num) {
+		return listaFilmes.get(num);
+	}
+
+
+	public void setListaFilmes(Filmes filme) {
+		this.listaFilmes.add(filme);
+	}
+
 
 
 	public TelaPrincipal() {
@@ -85,7 +115,7 @@ public class TelaPrincipal extends JFrame {
 				
 				telaCadFilmes.setVisible(true);
 				
-				listaFilmes.add(telaCadFilmes.getNovoFilme());
+				setListaFilmes(telaCadFilmes.getNovoFilme());
 				
 			}
 		});
@@ -102,7 +132,7 @@ public class TelaPrincipal extends JFrame {
 				
 				telaCadCds.setVisible(true);
 				
-				listaCds.add(telaCadCds.getNovoCd());
+				setListaCds(telaCadCds.getNovoCd());
 				
 			}
 		});
@@ -120,7 +150,7 @@ public class TelaPrincipal extends JFrame {
 				
 				telaCadCliente.setVisible(true);
 				
-				clientes.add(telaCadCliente.getNovoCliente());
+				setClientes(telaCadCliente.getNovoCliente());
 				
 				
 			}
@@ -203,6 +233,8 @@ public class TelaPrincipal extends JFrame {
 	
 	
 	
+	
+
 	public static void main(String[] args) {
 		
 		

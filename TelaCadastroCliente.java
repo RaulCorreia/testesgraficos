@@ -13,48 +13,19 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 
 
 public class TelaCadastroCliente extends JInternalFrame {
 	private JTextField campoTextoNome;
 	private JTextField campoTextoCpf;
 	private JTextField campoTextoTel;
-	private String nome;
-	private String cpf;
-	private String telefone;
-	Cliente novoCliente;
+	private Cliente novoCliente;
 	
-	
-	
-	
-	public String getNome() {
-		return nome;
-	}
-
-
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
-
-
-	public String getCpf() {
-		return cpf;
-	}
-
-
-	public void setCpf(String cpf) {
-		this.cpf = cpf;
-	}
-
-
-	public String getTelefone() {
-		return telefone;
-	}
-
-
-	public void setTelefone(String telefone) {
-		this.telefone = telefone;
-	}
 
 
 	public Cliente getNovoCliente() {
@@ -116,23 +87,49 @@ public class TelaCadastroCliente extends JInternalFrame {
 		botaoCadastrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
 				
-				setNome(campoTextoNome.getText());
-				setCpf(campoTextoCpf.getText());
-				setTelefone(campoTextoTel.getText());
+				setNovoCliente(new Cliente(campoTextoNome.getText(), campoTextoCpf.getText(), campoTextoTel.getText()));
 				
-				novoCliente = new Cliente(nome, cpf, telefone);
+				
+				campoTextoNome.setText(null);
+				campoTextoCpf.setText(null);
+				campoTextoTel.setText(null);
+				
+				
+				//Salvar o Cadastro Do Filme
+				File arquivo;
+				FileWriter writer;
+				PrintWriter escrever;
+				
+				try {
+					arquivo = new File ("BancoDeClientes.txt");
+					writer = new FileWriter(arquivo, true);
+					escrever = new PrintWriter(writer);
+				
+					escrever.println(getNovoCliente().gravarArquivo());
+					
+					escrever.close();
+					writer.close();
+					
+				
+				} catch (FileNotFoundException e) {
+					
+					JOptionPane.showMessageDialog(null,"Arquivo Nao Foi Encontrado ou Nao Foi Aberto");
+					
+				} catch (IOException e) {
+					
+					JOptionPane.showMessageDialog(null,"Nao Foi Possivel Salvar");
+				}
 				
 				JOptionPane.showMessageDialog(null,"Cliente Cadastrado Com Sucesso!");
 				
-				TelaCadastroCliente.this.dispose();
 				
 			}
 		});
 		
 		
-		JButton botaoCancelar = new JButton("Cancelar");
+		JButton botaoFechar = new JButton("Fechar");
 		
-		botaoCancelar.addActionListener(new ActionListener() {
+		botaoFechar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
 				
 				TelaCadastroCliente.this.dispose();
@@ -177,7 +174,7 @@ public class TelaCadastroCliente extends JInternalFrame {
 					.addContainerGap(161, Short.MAX_VALUE)
 					.addComponent(botaoCadastrar)
 					.addGap(113)
-					.addComponent(botaoCancelar)
+					.addComponent(botaoFechar)
 					.addGap(137))
 		);
 		lLayoutTelaCadCliente.setVerticalGroup(
@@ -201,7 +198,7 @@ public class TelaCadastroCliente extends JInternalFrame {
 						.addComponent(lblTelefone))
 					.addGap(68)
 					.addGroup(lLayoutTelaCadCliente.createParallelGroup(Alignment.BASELINE)
-						.addComponent(botaoCancelar)
+						.addComponent(botaoFechar)
 						.addComponent(botaoCadastrar))
 					.addContainerGap(63, Short.MAX_VALUE))
 		);

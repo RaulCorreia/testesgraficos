@@ -11,6 +11,11 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 
 
 public class TelaCadastroCds extends JInternalFrame {
@@ -76,18 +81,47 @@ public class TelaCadastroCds extends JInternalFrame {
 		btnCadastrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
 				
-				novoCd = new Cds(campoTextoGenero.getText(), false, false, Float.parseFloat(campotextoPreco.getText()), campoTextoBanda.getText(), campoTextoAlbum.getText());
+				setNovoCd (new Cds(campoTextoBanda.getText(), campoTextoAlbum.getText(), campoTextoGenero.getText(), false, false, Float.parseFloat(campotextoPreco.getText())));
+				
+				
+				campoTextoBanda.setText(null);
+				campoTextoAlbum.setText(null);
+				campoTextoGenero.setText(null);
+				campotextoPreco.setText(null);
+				
+				//Salvar o Cadastro Do Filme
+				File arquivo;
+				FileWriter writer;
+				PrintWriter escrever;
+				
+				try {
+					arquivo = new File ("BancoDeCds.txt");
+					writer = new FileWriter(arquivo, true);
+					escrever = new PrintWriter(writer);
+				
+					escrever.println(getNovoCd().gravarArquivo());
+					
+					escrever.close();
+					writer.close();
+					
+				
+				} catch (FileNotFoundException e) {
+					
+					JOptionPane.showMessageDialog(null,"Arquivo Nao Foi Encontrado ou Nao Foi Aberto");
+					
+				} catch (IOException e) {
+					
+					JOptionPane.showMessageDialog(null,"Nao Foi Possivel Salvar");
+				}
 				
 				JOptionPane.showMessageDialog(null,"Cd Cadastrado Com Sucesso!");
-				
-				TelaCadastroCds.this.dispose();
 				
 			}
 		});
 		
-		JButton btnCancelar = new JButton("Cancelar");
+		JButton btnFechar = new JButton("Fechar");
 		
-		btnCancelar.addActionListener(new ActionListener() {
+		btnFechar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
 				
 				TelaCadastroCds.this.dispose();
@@ -122,7 +156,7 @@ public class TelaCadastroCds extends JInternalFrame {
 						.addGroup(layoutTelaCadCds.createSequentialGroup()
 							.addComponent(btnCadastrar)
 							.addPreferredGap(ComponentPlacement.RELATED, 133, Short.MAX_VALUE)
-							.addComponent(btnCancelar)
+							.addComponent(btnFechar)
 							.addGap(116))))
 		);
 		layoutTelaCadCds.setVerticalGroup(
@@ -147,7 +181,7 @@ public class TelaCadastroCds extends JInternalFrame {
 					.addGap(46)
 					.addGroup(layoutTelaCadCds.createParallelGroup(Alignment.BASELINE)
 						.addComponent(btnCadastrar)
-						.addComponent(btnCancelar))
+						.addComponent(btnFechar))
 					.addContainerGap(58, Short.MAX_VALUE))
 		);
 		getContentPane().setLayout(layoutTelaCadCds);

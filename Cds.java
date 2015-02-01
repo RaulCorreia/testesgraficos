@@ -5,7 +5,7 @@ public class Cds extends Produtos{
 	String album;
 	
 
-	public Cds(String genero, boolean locado, boolean reservado, float preco, String nomeBanda, String album) {
+	public Cds(String nomeBanda, String album, String genero, boolean locado, boolean reservado, float preco) {
 		super(genero, locado, reservado, preco);
 		setNomeBanda(nomeBanda);
 		setAlbum(album);
@@ -31,6 +31,12 @@ public class Cds extends Produtos{
 	}
 	
 	
+	public String gravarArquivo(){
+		
+		
+		return getNomeBanda() +" "+ getAlbum() +" "+ getGenero() +" "+ isLocado() +" "+ isReservado() +" "+ getPreco();
+		
+	}
 	
 	
 	

@@ -94,8 +94,8 @@ public class TelaBuscaCliente extends JInternalFrame {
 		
 		
 		
-		JButton btnCancelar = new JButton("Cancelar");
-		btnCancelar.addActionListener(new ActionListener() {
+		JButton btnFechar = new JButton("Fechar");
+		btnFechar.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent evt) {
 				
@@ -121,7 +121,7 @@ public class TelaBuscaCliente extends JInternalFrame {
 						.addComponent(campoTextoCpf)
 						.addComponent(btnBuscaPorCpf))
 					.addPreferredGap(ComponentPlacement.RELATED, 194, Short.MAX_VALUE)
-					.addComponent(btnCancelar)
+					.addComponent(btnFechar)
 					.addGap(21))
 				.addGroup(LayoutTelaBuscaCliente.createSequentialGroup()
 					.addGap(192)
@@ -147,7 +147,7 @@ public class TelaBuscaCliente extends JInternalFrame {
 					.addContainerGap(75, Short.MAX_VALUE))
 				.addGroup(LayoutTelaBuscaCliente.createSequentialGroup()
 					.addContainerGap(314, Short.MAX_VALUE)
-					.addComponent(btnCancelar)
+					.addComponent(btnFechar)
 					.addGap(23))
 		);
 		getContentPane().setLayout(LayoutTelaBuscaCliente);

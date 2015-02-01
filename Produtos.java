@@ -48,20 +48,12 @@ public class Produtos {
 	}
 
 	public void setPreco(float preco) {
-		do{
-			
-			if(preco > 0){
 				
-				this.preco = preco;
+		this.preco = preco;
 				
-			} else{
-				
-				//mensagem
-			}
-			
-		} while(preco < 0);
 		
 	}
+	
 	
 	
 	

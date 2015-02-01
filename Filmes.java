@@ -5,7 +5,7 @@ public class Filmes extends Produtos {
 	private int ano;
 	
 
-	public Filmes(String genero, boolean locado, boolean reservado, float preco, String titulo, int ano) {
+	public Filmes(String titulo, String genero, boolean locado, boolean reservado, float preco, int ano) {
 		
 		super(genero, locado, reservado, preco);
 		setTitulo(titulo);
@@ -34,19 +34,17 @@ public class Filmes extends Produtos {
 
 	public void setAno(int ano) {
 		
-		do
-			
-			if (ano > 1900){
-				this.ano = ano;
+		this.ano = ano;
 				
-			} else {
-				
-				//Gera mensagem
-			}
-		while (ano < 1900);
 		
 	}
 	
+	public String gravarArquivo(){
+		
+		
+		return getTitulo() +" "+ getGenero() +" "+ isLocado() +" "+ isReservado() +" "+ getPreco() +" "+ getAno();
+		
+	}
 	
 	
 

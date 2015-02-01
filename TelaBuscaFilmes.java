@@ -96,9 +96,9 @@ public class TelaBuscaFilmes extends JInternalFrame {
 		});
 		
 		
-		JButton btnCancelar = new JButton("Cancelar");
+		JButton btnFechar = new JButton("Fechar");
 		
-		btnCancelar.addActionListener(new ActionListener() {
+		btnFechar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
 				TelaBuscaFilmes.this.dispose();
@@ -134,7 +134,7 @@ public class TelaBuscaFilmes extends JInternalFrame {
 					.addContainerGap(218, Short.MAX_VALUE))
 				.addGroup(Alignment.TRAILING, layoutTelaBuscaFilmes.createSequentialGroup()
 					.addContainerGap(383, Short.MAX_VALUE)
-					.addComponent(btnCancelar)
+					.addComponent(btnFechar)
 					.addGap(59))
 		);
 		layoutTelaBuscaFilmes.setVerticalGroup(
@@ -155,7 +155,7 @@ public class TelaBuscaFilmes extends JInternalFrame {
 					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addComponent(btnBuscaPorGenero)
 					.addPreferredGap(ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
-					.addComponent(btnCancelar)
+					.addComponent(btnFechar)
 					.addGap(22))
 		);
 		getContentPane().setLayout(layoutTelaBuscaFilmes);

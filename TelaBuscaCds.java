@@ -93,9 +93,9 @@ public class TelaBuscaCds extends JInternalFrame {
 	
 	
 	
-	JButton btnCancelar = new JButton("Cancelar");
+	JButton btnFechar = new JButton("Fechar");
 	
-	btnCancelar.addActionListener(new ActionListener() {
+	btnFechar.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 			
 			TelaBuscaCds.this.dispose();
@@ -141,7 +141,7 @@ public class TelaBuscaCds extends JInternalFrame {
 							.addGap(241)))))
 			.addGroup(Alignment.TRAILING, layoutTelaBuscaCds.createSequentialGroup()
 				.addContainerGap(388, Short.MAX_VALUE)
-				.addComponent(btnCancelar)
+				.addComponent(btnFechar)
 				.addGap(54))
 	);
 	layoutTelaBuscaCds.setVerticalGroup(
@@ -162,7 +162,7 @@ public class TelaBuscaCds extends JInternalFrame {
 				.addPreferredGap(ComponentPlacement.UNRELATED)
 				.addComponent(btnBuscaPorGenero)
 				.addPreferredGap(ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
-				.addComponent(btnCancelar)
+				.addComponent(btnFechar)
 				.addGap(24))
 	);
 	getContentPane().setLayout(layoutTelaBuscaCds);

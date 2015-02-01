@@ -10,6 +10,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.io.*;
+
 
 
 public class TelaCadastroFilmes extends JInternalFrame {
@@ -18,7 +20,7 @@ public class TelaCadastroFilmes extends JInternalFrame {
 	private JTextField campoTextoGenero;
 	private JTextField campoTextoPreco;
 	private JButton btnCadastrar;
-	private JButton btnCancelar;
+	private JButton btnFechar;
 	private Filmes novoFilme;
 	
 	
@@ -79,18 +81,48 @@ public class TelaCadastroFilmes extends JInternalFrame {
 		btnCadastrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
 				
-				setNovoFilme(new Filmes(campoTextoGenero.getText(), false, false, Float.parseFloat(campoTextoPreco.getText()), campoTextoTitulo.getText(), Integer.parseInt(campoTextoAno.getText())));
+				setNovoFilme(new Filmes(campoTextoTitulo.getText(), campoTextoGenero.getText(), false, false, Float.parseFloat(campoTextoPreco.getText()), Integer.parseInt(campoTextoAno.getText())));
+				
+				
+				campoTextoTitulo.setText(null);
+				campoTextoAno.setText(null);
+				campoTextoGenero.setText(null);
+				campoTextoPreco.setText(null);
+				
+				//Salvar o Cadastro Do Filme
+				File arquivo;
+				FileWriter writer;
+				PrintWriter escrever;
+				
+				try {
+					arquivo = new File ("BancoDeFilmes.txt");
+					writer = new FileWriter(arquivo, true);
+					escrever = new PrintWriter(writer);
+				
+					escrever.println(getNovoFilme().gravarArquivo());
+					
+					escrever.close();
+					writer.close();
+					
+				
+				} catch (FileNotFoundException e) {
+					
+					JOptionPane.showMessageDialog(null,"Arquivo Nao Foi Encontrado ou Nao Foi Aberto");
+					
+				} catch (IOException e) {
+					
+					JOptionPane.showMessageDialog(null,"Nao Foi Possivel Salvar");
+				}
 				
 				JOptionPane.showMessageDialog(null,"Filme Cadastrado Com Sucesso!");
 				
-				TelaCadastroFilmes.this.dispose();
 				
 			}
 		});
 		
 		
-		btnCancelar = new JButton("Cancelar");
-		btnCancelar.addActionListener(new ActionListener() {
+		btnFechar = new JButton("Fechar");
+		btnFechar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
 				
 				TelaCadastroFilmes.this.dispose();
@@ -101,12 +133,19 @@ public class TelaCadastroFilmes extends JInternalFrame {
 		
 		
 		
+		
+		
 		//Alinhamento do Layout
 		GroupLayout layoutTelaCadFilmes = new GroupLayout(getContentPane());
 		layoutTelaCadFilmes.setHorizontalGroup(
 			layoutTelaCadFilmes.createParallelGroup(Alignment.LEADING)
 				.addGroup(layoutTelaCadFilmes.createSequentialGroup()
 					.addGroup(layoutTelaCadFilmes.createParallelGroup(Alignment.LEADING)
+						.addGroup(layoutTelaCadFilmes.createSequentialGroup()
+							.addGap(123)
+							.addComponent(btnCadastrar)
+							.addGap(90)
+							.addComponent(btnFechar))
 						.addGroup(layoutTelaCadFilmes.createSequentialGroup()
 							.addGap(84)
 							.addGroup(layoutTelaCadFilmes.createParallelGroup(Alignment.LEADING)
@@ -120,13 +159,8 @@ public class TelaCadastroFilmes extends JInternalFrame {
 								.addGroup(layoutTelaCadFilmes.createParallelGroup(Alignment.LEADING, false)
 									.addComponent(campoTextoTitulo, GroupLayout.DEFAULT_SIZE, 196, Short.MAX_VALUE)
 									.addComponent(campoTextoGenero)
-									.addComponent(campoTextoAno, GroupLayout.PREFERRED_SIZE, 57, GroupLayout.PREFERRED_SIZE))))
-						.addGroup(layoutTelaCadFilmes.createSequentialGroup()
-							.addGap(123)
-							.addComponent(btnCadastrar)
-							.addGap(90)
-							.addComponent(btnCancelar)))
-					.addContainerGap(148, Short.MAX_VALUE))
+									.addComponent(campoTextoAno, GroupLayout.PREFERRED_SIZE, 57, GroupLayout.PREFERRED_SIZE)))))
+					.addContainerGap(162, Short.MAX_VALUE))
 		);
 		layoutTelaCadFilmes.setVerticalGroup(
 			layoutTelaCadFilmes.createParallelGroup(Alignment.LEADING)
@@ -150,7 +184,7 @@ public class TelaCadastroFilmes extends JInternalFrame {
 					.addGap(60)
 					.addGroup(layoutTelaCadFilmes.createParallelGroup(Alignment.BASELINE)
 						.addComponent(btnCadastrar)
-						.addComponent(btnCancelar))
+						.addComponent(btnFechar))
 					.addContainerGap(79, Short.MAX_VALUE))
 		);
 		getContentPane().setLayout(layoutTelaCadFilmes);
