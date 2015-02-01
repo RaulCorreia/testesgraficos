@@ -34,7 +34,7 @@ public class Cds extends Produtos{
 	public String gravarArquivo(){
 		
 		
-		return getNomeBanda() +" "+ getAlbum() +" "+ getGenero() +" "+ isLocado() +" "+ isReservado() +" "+ getPreco();
+		return getNomeBanda() +'-'+ getAlbum() +'-'+ getGenero() +'-'+ isLocado() +'-'+ isReservado() +'-'+ getPreco();
 		
 	}
 	

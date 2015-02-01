@@ -48,7 +48,7 @@ public class Cliente {
 	public String gravarArquivo(){
 		
 		
-		return getNome() +" "+ getCpf() +" "+ getTelefone() +" "+ getSaldo();
+		return getNome() +'-'+ getCpf() +'-'+ getTelefone() +'-'+ getSaldo();
 		
 	}
 

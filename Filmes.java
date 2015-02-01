@@ -42,7 +42,8 @@ public class Filmes extends Produtos {
 	public String gravarArquivo(){
 		
 		
-		return getTitulo() +" "+ getGenero() +" "+ isLocado() +" "+ isReservado() +" "+ getPreco() +" "+ getAno();
+		
+		return getTitulo() +'-'+ getGenero() +'-'+ isLocado() +'-'+ isReservado() +'-'+ getPreco() +'-'+ getAno();
 		
 	}
 	

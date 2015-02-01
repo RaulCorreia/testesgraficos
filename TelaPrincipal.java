@@ -1,4 +1,5 @@
 //import java.awt.EventQueue;
+import java.text.ParseException;
 import java.util.ArrayList;
 
 import javax.swing.GroupLayout;
@@ -7,13 +8,21 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.border.EmptyBorder;
 
 
+
+
+
+
+
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.io.IOException;
 
 
 
@@ -94,6 +103,30 @@ public class TelaPrincipal extends JFrame {
 		menuBar.add(menuLocadora);
 		
 		JMenuItem subMenuAluguel = new JMenuItem("Aluguel");
+		
+		subMenuAluguel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent evt) {
+				
+				TelaLocadoraAluguel telaAluguel;
+				try {
+					telaAluguel = new TelaLocadoraAluguel();
+				
+				
+					desktopPrincipal.add(telaAluguel);
+				
+				
+					telaAluguel.setVisible(true);
+				
+				} catch (NumberFormatException | IOException e) {
+					JOptionPane.showMessageDialog(null, "Nenhum Arquivo do Banco De Dados Encontrado");
+					e.printStackTrace();
+				}
+				
+				
+				
+				
+			}
+		});
 		menuLocadora.add(subMenuAluguel);
 		
 		JMenuItem subMenuReservar = new JMenuItem("Reservar");
@@ -115,7 +148,7 @@ public class TelaPrincipal extends JFrame {
 				
 				telaCadFilmes.setVisible(true);
 				
-				setListaFilmes(telaCadFilmes.getNovoFilme());
+				//setListaFilmes(telaCadFilmes.getNovoFilme());
 				
 			}
 		});
@@ -132,7 +165,7 @@ public class TelaPrincipal extends JFrame {
 				
 				telaCadCds.setVisible(true);
 				
-				setListaCds(telaCadCds.getNovoCd());
+				//setListaCds(telaCadCds.getNovoCd());
 				
 			}
 		});
@@ -144,13 +177,20 @@ public class TelaPrincipal extends JFrame {
 			public void actionPerformed(ActionEvent evt) {
 				
 				
-				TelaCadastroCliente telaCadCliente = new TelaCadastroCliente();
+				TelaCadastroCliente telaCadCliente;
+				try {
+					telaCadCliente = new TelaCadastroCliente();
 				
-				desktopPrincipal.add(telaCadCliente);
+					desktopPrincipal.add(telaCadCliente);
 				
-				telaCadCliente.setVisible(true);
+					telaCadCliente.setVisible(true);
 				
-				setClientes(telaCadCliente.getNovoCliente());
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				//setClientes(telaCadCliente.getNovoCliente());
 				
 				
 			}
@@ -257,7 +297,7 @@ public class TelaPrincipal extends JFrame {
 	
 	
 	//Criação das Funções
-	Cliente buscarNome(String nome){
+	public Cliente buscarNome(String nome){
 		
 		Cliente clienteBusca = new Cliente();
 		Cliente clienteAchado = new Cliente();
