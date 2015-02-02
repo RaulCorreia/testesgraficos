@@ -112,10 +112,9 @@ public class TelaCadastroFilmes extends JInternalFrame {
 				} catch (IOException e) {
 					
 					JOptionPane.showMessageDialog(null,"Nao Foi Possivel Salvar");
+				} finally{				
+				 JOptionPane.showMessageDialog(null,"Filme Cadastrado Com Sucesso!");
 				}
-				
-				JOptionPane.showMessageDialog(null,"Filme Cadastrado Com Sucesso!");
-				
 				
 			}
 		});

@@ -16,9 +16,11 @@ import javax.swing.JLabel;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+
 import javax.swing.JTextPane;
 import javax.swing.JButton;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.JComboBox;
 
 
 
@@ -33,7 +35,49 @@ public class TelaLocadoraAluguel extends JInternalFrame {
 	File arq;
 	FileReader reader;
 	BufferedReader ler;
+	private int idFilmeSelecionado = -1;
+	private int idClienteSelecionado = -1;
+	private int quantidade = 0;
 	
+	
+
+
+
+
+	public int getQuantidade() {
+		return quantidade;
+	}
+
+
+
+	public void setQuantidade(int quantidade) {
+		this.quantidade = quantidade;
+	}
+
+
+
+	public int getIdFilmeSelecionado() {
+		return idFilmeSelecionado;
+	}
+
+
+
+	public void setIdFilmeSelecionado(int idFilmeSelecionado) {
+		this.idFilmeSelecionado = idFilmeSelecionado;
+	}
+
+
+
+	public int getIdClienteSelecionado() {
+		return idClienteSelecionado;
+	}
+
+
+
+	public void setIdClienteSelecionado(int idClienteSelecionado) {
+		this.idClienteSelecionado = idClienteSelecionado;
+	}
+
 
 
 
@@ -71,7 +115,6 @@ public class TelaLocadoraAluguel extends JInternalFrame {
 		String linha = "";
 		
 		
-		if (arq.exists() && arq.isFile() && arq.canRead()){
 		//Carregando Dados dos filmes
 		while ((linha = ler.readLine()) != null){
 			Filmes filme;
@@ -96,30 +139,40 @@ public class TelaLocadoraAluguel extends JInternalFrame {
 			
 			
 			filme = new Filmes(partes[0], partes[1], alugado, reservado, Float.parseFloat(partes[4]), Integer.parseInt(partes[5]));
-			
 			listaFilmes.add(filme);
 		}
+		ler.close();
+		reader.close();
+		
 		
 		
 		//Carregando Dados dos Clientes
 		arq = new File("BancoDeClientes.txt");
+		reader = new FileReader(arq);
+		ler = new BufferedReader(reader);
 		
 		while ((linha = ler.readLine()) != null){
 			Cliente cliente;
 			
 			String[] partes = linha.split("-");
 			
-			cliente = new Cliente(partes[0], partes[1], partes[2]);
+			cliente = new Cliente(partes[0], partes[1], partes[2], partes[4]);
 			cliente.setSaldo(Float.parseFloat(partes[3]));
+			
 			clientes.add(cliente);
 			
 			
 		}
 		
+		ler.close();
+		reader.close();
+		
+		
 		
 		//Carregando Dados dos Cds
 		arq = new File("BancoDeCds.txt");
-		
+		reader = new FileReader(arq);
+		ler = new BufferedReader(reader);
 		
 		
 		while ((linha = ler.readLine()) != null){
@@ -147,11 +200,13 @@ public class TelaLocadoraAluguel extends JInternalFrame {
 			listaCds.add(cd);
 			
 		}
-		} else{
-			JOptionPane.showMessageDialog(null, "Nenhum Arquivo do Banco De Dados Encontrado");
-		}
+		ler.close();
+		reader.close();
 		
 		
+		
+		//ComboBox com as Escolhas
+		JComboBox comboBoxOpcoes = new JComboBox();
 		
 		
 		//Espaços de Texto
@@ -183,29 +238,200 @@ public class TelaLocadoraAluguel extends JInternalFrame {
 		botaoDeSelecao.add(selecaoCd);
 		
 		
+		
 		//Botoes
+		
+		JButton btnAlugar = new JButton("Alugar");
+		
+	
 		JButton btnBuscarCliente = new JButton("Buscar Cliente");
-		
-		
-		//Seleção do Tipo de produto
-		selecaoFilme.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent evt) {
+		btnBuscarCliente.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String nome = campoTextCliente.getText();
+				int i;
+				boolean teste = false;
 				
-				JOptionPane.showMessageDialog(null, "Filme foi selecionado");
-				lblClienteSelecionado.setVisible(true);
-				textoNomeClienteSelecionado.setVisible(true);
+				
+				
+				for(i = 0; i < clientes.size(); i++){
+					
+					teste = nome.equalsIgnoreCase(clientes.get(i).getNome());
+					if( teste == true){
+						
+						textoNomeClienteSelecionado.setText(clientes.get(i).getNome() + " Cpf: " + clientes.get(i).getCpf());
+						lblClienteSelecionado.setVisible(true);
+						textoNomeClienteSelecionado.setVisible(true);
+						setIdClienteSelecionado(i);
+						break;
+					}
+					
+				}
+				
 				
 			}
 		});
 		
 		
+		JButton btnBuscarFilmebanda = new JButton("Buscar Filme/Banda");
+		btnBuscarFilmebanda.setEnabled(false);
 		
+		
+		JButton btnFechar = new JButton("Fechar");
+		btnFechar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				TelaLocadoraAluguel.this.dispose();
+			}
+		});
+		
+		
+		
+		
+		//Seleção do Tipo de produto
+		
+		//Alugar Filmes
+		selecaoFilme.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent evt) {
+				
+				btnBuscarFilmebanda.setEnabled(true);
+				
+				btnBuscarFilmebanda.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent evt) {
+						
+						String nome = campoTextoNome.getText();
+						int i;
+						boolean teste = false;
+						
+						
+						
+						
+						for(i = 0; i < listaFilmes.size(); i++){
+							
+							teste = nome.equalsIgnoreCase(listaFilmes.get(i).getTitulo());
+							if( teste == true){
+								
+								String verificado;
+								
+								if(listaFilmes.get(i).isLocado() == true || listaFilmes.get(i).isReservado() == true){
+									verificado = "INDISPONIVEL";
+								} else{
+									verificado = "DISPONIVEL";
+								}
+								
+								
+								comboBoxOpcoes.addItem(listaFilmes.get(i).getTitulo() +" - R$ " + String.valueOf(listaFilmes.get(i).getPreco()) + " - Ano: " + listaFilmes.get(i).getAno() +" - " + verificado);
+								setQuantidade(getQuantidade()+1);
+								
+								
+								
+							}
+							
+						}
+						
+						//------------------ Opcao Selecionada no ComboBox
+						
+						comboBoxOpcoes.addActionListener(new ActionListener() {
+							public void actionPerformed(ActionEvent evt) {
+								
+								for (int i = 0; i <= getQuantidade(); i++){
+									
+									if (comboBoxOpcoes.getSelectedIndex() == i){
+										
+										setIdFilmeSelecionado(i);
+										
+									}
+									
+									
+									
+								}
+							
+													
+									
+										
+							}
+								
+								
+							
+						});
+					
+						
+					
+					
+					}
+				});
+				
+				
+				//-------Botao Alugar
+				
+				btnAlugar.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent evt) {
+						
+						if(getIdFilmeSelecionado() != -1 && getIdClienteSelecionado() != -1){
+							
+							listaFilmes.get(getIdFilmeSelecionado()).setLocado(true);
+							clientes.get(getIdClienteSelecionado()).setSaldo(listaFilmes.get(getIdFilmeSelecionado()).getPreco());
+							JOptionPane.showMessageDialog(null, "Aluguel Resgistrado com sucesso.\nDevolução: 3 Dias Uteis\nValor a ser pago: R$ " + listaFilmes.get(getIdFilmeSelecionado()).getPreco());
+							
+							//Salvando Alterações Feitas ------
+							File arquivo;
+							FileWriter writer;
+							PrintWriter escrever;
+							
+							try {
+								arquivo = new File ("BancoDeFilmes.txt");
+								writer = new FileWriter(arquivo, false);
+								escrever = new PrintWriter(writer);
+								
+								for(int i = 0; i < listaFilmes.size(); i++){
+									
+									escrever.println(listaFilmes.get(i).gravarArquivo());
+									
+								}
+							
+								
+								
+								escrever.close();
+								writer.close();
+								
+							
+							} catch (FileNotFoundException e) {
+								
+								JOptionPane.showMessageDialog(null,"Arquivo Nao Foi Encontrado ou Nao Foi Aberto");
+								
+							} catch (IOException e) {
+								
+								JOptionPane.showMessageDialog(null,"Nao Foi Possivel Salvar");
+							}
+							
+						}
+						
+						
+					}
+				});
+				
+				
+					
+			}
+		});
+		
+		
+		//Alugar Cds
 		selecaoCd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
 				JOptionPane.showMessageDialog(null, "Cds foi selecionado");
 			}
 		});
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		
 		
 		
@@ -237,6 +463,12 @@ public class TelaLocadoraAluguel extends JInternalFrame {
 					.addComponent(selecaoCd)
 					.addContainerGap(192, Short.MAX_VALUE))
 				.addGroup(groupLayout.createSequentialGroup()
+					.addContainerGap(236, Short.MAX_VALUE)
+					.addComponent(btnAlugar)
+					.addGap(123)
+					.addComponent(btnFechar)
+					.addGap(18))
+				.addGroup(groupLayout.createSequentialGroup()
 					.addGap(56)
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addComponent(lblNome)
@@ -245,17 +477,25 @@ public class TelaLocadoraAluguel extends JInternalFrame {
 					.addGap(46)
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(btnBuscarCliente)
+							.addComponent(comboBoxOpcoes, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 							.addContainerGap())
 						.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 							.addGroup(groupLayout.createSequentialGroup()
-								.addComponent(textoNomeClienteSelecionado, GroupLayout.PREFERRED_SIZE, 216, GroupLayout.PREFERRED_SIZE)
+								.addComponent(btnBuscarFilmebanda)
 								.addContainerGap())
-							.addGroup(groupLayout.createSequentialGroup()
+							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+								.addGroup(groupLayout.createSequentialGroup()
+									.addComponent(btnBuscarCliente)
+									.addContainerGap())
 								.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-									.addComponent(campoTextCliente, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 231, Short.MAX_VALUE)
-									.addComponent(campoTextoNome, GroupLayout.DEFAULT_SIZE, 231, Short.MAX_VALUE))
-								.addGap(144)))))
+									.addGroup(groupLayout.createSequentialGroup()
+										.addComponent(textoNomeClienteSelecionado, GroupLayout.PREFERRED_SIZE, 216, GroupLayout.PREFERRED_SIZE)
+										.addContainerGap())
+									.addGroup(groupLayout.createSequentialGroup()
+										.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+											.addComponent(campoTextCliente, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE)
+											.addComponent(campoTextoNome, GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE))
+										.addGap(144)))))))
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
@@ -268,7 +508,9 @@ public class TelaLocadoraAluguel extends JInternalFrame {
 					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 						.addComponent(campoTextoNome, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(lblNome))
-					.addGap(53)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(btnBuscarFilmebanda)
+					.addGap(24)
 					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 						.addComponent(campoTextCliente, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(lblNomeCliente))
@@ -278,7 +520,13 @@ public class TelaLocadoraAluguel extends JInternalFrame {
 					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
 						.addComponent(textoNomeClienteSelecionado, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(lblClienteSelecionado))
-					.addContainerGap(144, Short.MAX_VALUE))
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addComponent(comboBoxOpcoes, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED, 79, Short.MAX_VALUE)
+					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+						.addComponent(btnFechar)
+						.addComponent(btnAlugar))
+					.addContainerGap())
 		);
 		getContentPane().setLayout(groupLayout);
 		

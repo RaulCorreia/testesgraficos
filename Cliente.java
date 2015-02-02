@@ -6,18 +6,29 @@ public class Cliente {
 	private String cpf;
 	private float saldo;
 	private String telefone;
+	private String endereco;
 	
 	public Cliente (){}
 	
-	public Cliente(String nome, String cpf, String telefone) {
+	public Cliente(String nome, String cpf, String telefone, String endereco) {
 		setNome(nome);
 		setCpf(cpf);
 		setTelefone(telefone);
+		setEndereco(endereco);
 	
 	}
 	
 	
 	
+	
+	public String getEndereco() {
+		return endereco;
+	}
+
+	public void setEndereco(String endereco) {
+		this.endereco = endereco;
+	}
+
 	public String getNome() {
 		return nome;
 	}
@@ -48,7 +59,7 @@ public class Cliente {
 	public String gravarArquivo(){
 		
 		
-		return getNome() +'-'+ getCpf() +'-'+ getTelefone() +'-'+ getSaldo();
+		return getNome() +'-'+ getCpf() +'-'+ getTelefone() +'-'+ getSaldo() + '-' + getEndereco();
 		
 	}
 
