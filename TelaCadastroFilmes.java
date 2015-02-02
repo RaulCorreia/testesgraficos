@@ -11,14 +11,18 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.io.*;
+import java.text.ParseException;
+
+import javax.swing.JFormattedTextField;
+import javax.swing.text.MaskFormatter;
+import javax.swing.LayoutStyle.ComponentPlacement;
+import java.awt.Font;
 
 
 
 public class TelaCadastroFilmes extends JInternalFrame {
 	private JTextField campoTextoTitulo;
-	private JTextField campoTextoAno;
 	private JTextField campoTextoGenero;
-	private JTextField campoTextoPreco;
 	private JButton btnCadastrar;
 	private JButton btnFechar;
 	private Filmes novoFilme;
@@ -37,7 +41,8 @@ public class TelaCadastroFilmes extends JInternalFrame {
 
 
 
-	public TelaCadastroFilmes() {
+	public TelaCadastroFilmes() throws ParseException {
+		
 		
 		//Ação ao mover a janela, voltar aonde estava
 		addComponentListener(new ComponentAdapter() {
@@ -55,14 +60,17 @@ public class TelaCadastroFilmes extends JInternalFrame {
 		campoTextoTitulo = new JTextField();
 		campoTextoTitulo.setColumns(10);
 		
-		campoTextoAno = new JTextField();
-		campoTextoAno.setColumns(10);
-		
 		campoTextoGenero = new JTextField();
 		campoTextoGenero.setColumns(10);
 		
-		campoTextoPreco = new JTextField();
-		campoTextoPreco.setColumns(10);
+		MaskFormatter preco = new MaskFormatter("##,##");;
+		MaskFormatter ano = new MaskFormatter("####");;
+		
+		JFormattedTextField textoFormatadoPreco = new JFormattedTextField(preco);;
+		JFormattedTextField textoFormatadoAno = new JFormattedTextField(ano);;
+		
+		
+		
 		
 		
 		//Labels
@@ -74,6 +82,13 @@ public class TelaCadastroFilmes extends JInternalFrame {
 		
 		JLabel lblPreco = new JLabel("Pre\u00E7o:");
 		
+		JLabel lblapenasNumeros = new JLabel("*Apenas Numeros");
+		lblapenasNumeros.setFont(new Font("Tahoma", Font.PLAIN, 9));
+		
+		JLabel lblapenasNumeros_1 = new JLabel("*Apenas Numeros");
+		lblapenasNumeros_1.setFont(new Font("Tahoma", Font.PLAIN, 9));
+		
+		
 		
 		//Botoes
 		btnCadastrar = new JButton("Cadastrar");
@@ -81,13 +96,22 @@ public class TelaCadastroFilmes extends JInternalFrame {
 		btnCadastrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
 				
-				setNovoFilme(new Filmes(campoTextoTitulo.getText(), campoTextoGenero.getText(), false, false, Float.parseFloat(campoTextoPreco.getText()), Integer.parseInt(campoTextoAno.getText())));
+				String preco = textoFormatadoPreco.getText();
+				String ano = textoFormatadoAno.getText();
+				
+				preco = preco.replace(",", "");
+				
+				
+				setNovoFilme(new Filmes(campoTextoTitulo.getText(), campoTextoGenero.getText(), false, false, Float.parseFloat(preco), Integer.parseInt(ano)));
 				
 				
 				campoTextoTitulo.setText(null);
-				campoTextoAno.setText(null);
+				textoFormatadoAno.setText(null);
 				campoTextoGenero.setText(null);
-				campoTextoPreco.setText(null);
+				textoFormatadoPreco.setText(null);
+				
+				
+				
 				
 				//Salvar o Cadastro Do Filme
 				File arquivo;
@@ -134,6 +158,12 @@ public class TelaCadastroFilmes extends JInternalFrame {
 		
 		
 		
+		
+		
+		
+		
+		
+		
 		//Alinhamento do Layout
 		GroupLayout layoutTelaCadFilmes = new GroupLayout(getContentPane());
 		layoutTelaCadFilmes.setHorizontalGroup(
@@ -154,12 +184,18 @@ public class TelaCadastroFilmes extends JInternalFrame {
 								.addComponent(lblPreco))
 							.addGap(22)
 							.addGroup(layoutTelaCadFilmes.createParallelGroup(Alignment.LEADING)
-								.addComponent(campoTextoPreco, GroupLayout.PREFERRED_SIZE, 60, GroupLayout.PREFERRED_SIZE)
-								.addGroup(layoutTelaCadFilmes.createParallelGroup(Alignment.LEADING, false)
-									.addComponent(campoTextoTitulo, GroupLayout.DEFAULT_SIZE, 196, Short.MAX_VALUE)
-									.addComponent(campoTextoGenero)
-									.addComponent(campoTextoAno, GroupLayout.PREFERRED_SIZE, 57, GroupLayout.PREFERRED_SIZE)))))
-					.addContainerGap(162, Short.MAX_VALUE))
+								.addGroup(layoutTelaCadFilmes.createSequentialGroup()
+									.addComponent(textoFormatadoPreco, GroupLayout.PREFERRED_SIZE, 48, GroupLayout.PREFERRED_SIZE)
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(lblapenasNumeros_1))
+								.addGroup(layoutTelaCadFilmes.createParallelGroup(Alignment.LEADING)
+									.addComponent(campoTextoTitulo, GroupLayout.DEFAULT_SIZE, 214, Short.MAX_VALUE)
+									.addComponent(campoTextoGenero, 214, 214, 214)
+									.addGroup(layoutTelaCadFilmes.createSequentialGroup()
+										.addComponent(textoFormatadoAno, GroupLayout.PREFERRED_SIZE, 49, GroupLayout.PREFERRED_SIZE)
+										.addPreferredGap(ComponentPlacement.RELATED)
+										.addComponent(lblapenasNumeros))))))
+					.addContainerGap(172, Short.MAX_VALUE))
 		);
 		layoutTelaCadFilmes.setVerticalGroup(
 			layoutTelaCadFilmes.createParallelGroup(Alignment.LEADING)
@@ -170,8 +206,9 @@ public class TelaCadastroFilmes extends JInternalFrame {
 						.addComponent(lblTitulo))
 					.addGap(18)
 					.addGroup(layoutTelaCadFilmes.createParallelGroup(Alignment.BASELINE)
-						.addComponent(campoTextoAno, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblAno))
+						.addComponent(lblAno)
+						.addComponent(textoFormatadoAno, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblapenasNumeros))
 					.addGap(18)
 					.addGroup(layoutTelaCadFilmes.createParallelGroup(Alignment.BASELINE)
 						.addComponent(campoTextoGenero, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
@@ -179,12 +216,13 @@ public class TelaCadastroFilmes extends JInternalFrame {
 					.addGap(18)
 					.addGroup(layoutTelaCadFilmes.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblPreco)
-						.addComponent(campoTextoPreco, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addGap(60)
+						.addComponent(textoFormatadoPreco, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblapenasNumeros_1))
+					.addGap(52)
 					.addGroup(layoutTelaCadFilmes.createParallelGroup(Alignment.BASELINE)
 						.addComponent(btnCadastrar)
 						.addComponent(btnFechar))
-					.addContainerGap(79, Short.MAX_VALUE))
+					.addContainerGap(87, Short.MAX_VALUE))
 		);
 		getContentPane().setLayout(layoutTelaCadFilmes);
 

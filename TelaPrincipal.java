@@ -20,6 +20,9 @@ import javax.swing.border.EmptyBorder;
 
 
 
+
+
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
@@ -142,13 +145,19 @@ public class TelaPrincipal extends JFrame {
 		subMenuCadFilmes.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
 				
-				TelaCadastroFilmes telaCadFilmes = new TelaCadastroFilmes();
+				TelaCadastroFilmes telaCadFilmes;
+				try {
+					telaCadFilmes = new TelaCadastroFilmes();
 				
-				desktopPrincipal.add(telaCadFilmes);
+					desktopPrincipal.add(telaCadFilmes);
 				
-				telaCadFilmes.setVisible(true);
+					telaCadFilmes.setVisible(true);
 				
-				//setListaFilmes(telaCadFilmes.getNovoFilme());
+				} catch (ParseException e) {
+					
+					e.printStackTrace();
+				}
+				
 				
 			}
 		});
@@ -159,13 +168,18 @@ public class TelaPrincipal extends JFrame {
 		subMenuCadCds.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
 				
-				TelaCadastroCds telaCadCds = new TelaCadastroCds();
+				TelaCadastroCds telaCadCds;
+				try {
+					telaCadCds = new TelaCadastroCds();
 				
-				desktopPrincipal.add(telaCadCds);
 				
-				telaCadCds.setVisible(true);
+					desktopPrincipal.add(telaCadCds);
 				
-				//setListaCds(telaCadCds.getNovoCd());
+					telaCadCds.setVisible(true);
+				
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
 				
 			}
 		});
@@ -206,13 +220,21 @@ public class TelaPrincipal extends JFrame {
 		subMenuBuscaFilmes.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				TelaBuscaFilmes telaBuscaFilmes = new TelaBuscaFilmes();
+				TelaBuscaFilmes telaBuscaFilmes;
+				try {
+					telaBuscaFilmes = new TelaBuscaFilmes();
+				
 				
 				desktopPrincipal.add(telaBuscaFilmes);
 				
 				telaBuscaFilmes.setVisible(true);
 				
-				setTextoBusca(telaBuscaFilmes.getTextoDigitado());
+				} catch (NumberFormatException | IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+				//setTextoBusca(telaBuscaFilmes.getTextoDigitado());
 				
 			}
 		});
@@ -222,13 +244,18 @@ public class TelaPrincipal extends JFrame {
 		subMenuBuscaCds.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				TelaBuscaCds telaBuscaCds = new TelaBuscaCds();
+				TelaBuscaCds telaBuscaCds;
+				try {
+					telaBuscaCds = new TelaBuscaCds();
 				
-				desktopPrincipal.add(telaBuscaCds);
 				
-				telaBuscaCds.setVisible(true);
+					desktopPrincipal.add(telaBuscaCds);
 				
-				setTextoBusca(telaBuscaCds.getTextoDigitado());
+					telaBuscaCds.setVisible(true);
+				
+				} catch (NumberFormatException | IOException e1) {
+					e1.printStackTrace();
+				}
 				
 			}
 		});
@@ -238,13 +265,25 @@ public class TelaPrincipal extends JFrame {
 		subMenuBuscaClientes.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent evt) {
-				TelaBuscaCliente telaBuscaCliente = new TelaBuscaCliente();
+				TelaBuscaCliente telaBuscaCliente;
+				try {
+					telaBuscaCliente = new TelaBuscaCliente();
 				
-				desktopPrincipal.add(telaBuscaCliente);
+					desktopPrincipal.add(telaBuscaCliente);
 				
-				telaBuscaCliente.setVisible(true);
+					telaBuscaCliente.setVisible(true);
 				
-				setTextoBusca(telaBuscaCliente.getTextoDigitado());
+				} catch (ParseException e) {
+					
+					e.printStackTrace();
+				} catch (NumberFormatException e) {
+					
+					e.printStackTrace();
+				} catch (IOException e) {
+					
+					e.printStackTrace();
+				}
+				
 				
 			}
 		});

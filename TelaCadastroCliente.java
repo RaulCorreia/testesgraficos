@@ -21,6 +21,8 @@ import java.text.ParseException;
 
 import javax.swing.JFormattedTextField;
 import javax.swing.text.MaskFormatter;
+import javax.swing.LayoutStyle.ComponentPlacement;
+import java.awt.Font;
 
 
 public class TelaCadastroCliente extends JInternalFrame {
@@ -44,6 +46,7 @@ public class TelaCadastroCliente extends JInternalFrame {
 
 
 	public TelaCadastroCliente() throws ParseException {
+		getContentPane().setFont(new Font("Tahoma", Font.PLAIN, 9));
 		
 		//Ação ao mover a janela, voltar aonde estava
 		addComponentListener(new ComponentAdapter() {
@@ -68,16 +71,12 @@ public class TelaCadastroCliente extends JInternalFrame {
 		campoTextoEndereco.setColumns(10);
 		
 		//Campo de Texto Formatado
-		MaskFormatter mascaraCpf;
-		MaskFormatter mascaraTel;
-		JFormattedTextField textoFormatadoCpf;
-		JFormattedTextField textoFormatadoTel;
-		
-		mascaraCpf = new MaskFormatter("###.###.###-##");
-		textoFormatadoCpf = new JFormattedTextField(mascaraCpf);
-		
-		mascaraTel = new MaskFormatter("(##)####-####");
-		textoFormatadoTel = new JFormattedTextField(mascaraTel);			
+		MaskFormatter mascaraCpf = new MaskFormatter("###.###.###-##");
+		MaskFormatter mascaraTel = new MaskFormatter("(##)####-####");
+		JFormattedTextField textoFormatadoCpf = new JFormattedTextField(mascaraCpf);
+		JFormattedTextField textoFormatadoTel = new JFormattedTextField(mascaraTel);
+	
+					
 		
 		
 		
@@ -90,6 +89,12 @@ public class TelaCadastroCliente extends JInternalFrame {
 		JLabel lblTelefone = new JLabel("Telefone:");
 		
 		JLabel lblEndereco = new JLabel("Endere\u00E7o:");
+		
+		JLabel lblapenasNumeros = new JLabel("*Apenas Numeros");
+		lblapenasNumeros.setFont(new Font("Tahoma", Font.PLAIN, 9));
+		
+		JLabel lblapenasNumeros_1 = new JLabel("*Apenas Numeros");
+		lblapenasNumeros_1.setFont(new Font("Tahoma", Font.PLAIN, 9));
 		
 		
 		
@@ -170,42 +175,42 @@ public class TelaCadastroCliente extends JInternalFrame {
 		
 		
 		
+		
+		
 		//Alinhamento do Layout
 		GroupLayout lLayoutTelaCadCliente = new GroupLayout(getContentPane());
 		lLayoutTelaCadCliente.setHorizontalGroup(
-			lLayoutTelaCadCliente.createParallelGroup(Alignment.TRAILING)
+			lLayoutTelaCadCliente.createParallelGroup(Alignment.LEADING)
 				.addGroup(lLayoutTelaCadCliente.createSequentialGroup()
-					.addContainerGap(132, Short.MAX_VALUE)
-					.addComponent(botaoCadastrar)
-					.addGap(119)
-					.addComponent(botaoFechar)
-					.addGap(134))
-				.addGroup(Alignment.LEADING, lLayoutTelaCadCliente.createSequentialGroup()
+					.addContainerGap()
 					.addGroup(lLayoutTelaCadCliente.createParallelGroup(Alignment.LEADING)
-						.addGroup(lLayoutTelaCadCliente.createSequentialGroup()
-							.addContainerGap()
-							.addComponent(lblTelefone))
-						.addGroup(lLayoutTelaCadCliente.createSequentialGroup()
-							.addContainerGap()
-							.addComponent(lblEndereco))
-						.addGroup(lLayoutTelaCadCliente.createSequentialGroup()
-							.addContainerGap()
-							.addComponent(lblCpf))
-						.addGroup(lLayoutTelaCadCliente.createSequentialGroup()
-							.addContainerGap()
-							.addComponent(lblNome)))
-					.addGap(40)
-					.addGroup(lLayoutTelaCadCliente.createParallelGroup(Alignment.LEADING)
-						.addGroup(lLayoutTelaCadCliente.createSequentialGroup()
-							.addGroup(lLayoutTelaCadCliente.createParallelGroup(Alignment.TRAILING, false)
-								.addComponent(textoFormatadoCpf, Alignment.LEADING)
-								.addComponent(textoFormatadoTel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 181, Short.MAX_VALUE))
-							.addContainerGap())
 						.addGroup(Alignment.TRAILING, lLayoutTelaCadCliente.createSequentialGroup()
+							.addComponent(botaoCadastrar)
+							.addGap(119)
+							.addComponent(botaoFechar)
+							.addGap(134))
+						.addGroup(lLayoutTelaCadCliente.createSequentialGroup()
+							.addGroup(lLayoutTelaCadCliente.createParallelGroup(Alignment.LEADING)
+								.addComponent(lblTelefone)
+								.addComponent(lblEndereco)
+								.addComponent(lblCpf)
+								.addComponent(lblNome))
+							.addGap(40)
 							.addGroup(lLayoutTelaCadCliente.createParallelGroup(Alignment.TRAILING)
-								.addComponent(campoTextoEndereco, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 394, Short.MAX_VALUE)
-								.addComponent(campoTextoNome, GroupLayout.DEFAULT_SIZE, 394, Short.MAX_VALUE))
-							.addGap(65))))
+								.addGroup(lLayoutTelaCadCliente.createSequentialGroup()
+									.addGroup(lLayoutTelaCadCliente.createParallelGroup(Alignment.TRAILING, false)
+										.addComponent(textoFormatadoCpf, Alignment.LEADING)
+										.addComponent(textoFormatadoTel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 181, Short.MAX_VALUE))
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addGroup(lLayoutTelaCadCliente.createParallelGroup(Alignment.LEADING)
+										.addComponent(lblapenasNumeros)
+										.addComponent(lblapenasNumeros_1))
+									.addGap(201))
+								.addGroup(lLayoutTelaCadCliente.createSequentialGroup()
+									.addGroup(lLayoutTelaCadCliente.createParallelGroup(Alignment.TRAILING)
+										.addComponent(campoTextoEndereco, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 367, Short.MAX_VALUE)
+										.addComponent(campoTextoNome, GroupLayout.DEFAULT_SIZE, 367, Short.MAX_VALUE))
+									.addGap(65))))))
 		);
 		lLayoutTelaCadCliente.setVerticalGroup(
 			lLayoutTelaCadCliente.createParallelGroup(Alignment.LEADING)
@@ -217,11 +222,13 @@ public class TelaCadastroCliente extends JInternalFrame {
 					.addGap(35)
 					.addGroup(lLayoutTelaCadCliente.createParallelGroup(Alignment.BASELINE)
 						.addComponent(textoFormatadoCpf, GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblCpf))
+						.addComponent(lblCpf)
+						.addComponent(lblapenasNumeros))
 					.addGap(34)
 					.addGroup(lLayoutTelaCadCliente.createParallelGroup(Alignment.BASELINE)
 						.addComponent(textoFormatadoTel, GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblTelefone))
+						.addComponent(lblTelefone)
+						.addComponent(lblapenasNumeros_1))
 					.addGap(18)
 					.addGroup(lLayoutTelaCadCliente.createParallelGroup(Alignment.BASELINE)
 						.addComponent(campoTextoEndereco, GroupLayout.PREFERRED_SIZE, 20, GroupLayout.PREFERRED_SIZE)

@@ -4,6 +4,7 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.text.MaskFormatter;
 import javax.swing.JLabel;
 import javax.swing.JButton;
 
@@ -16,13 +17,16 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.ParseException;
+
+import javax.swing.JFormattedTextField;
+import java.awt.Font;
 
 
 public class TelaCadastroCds extends JInternalFrame {
 	private JTextField campoTextoBanda;
 	private JTextField campoTextoAlbum;
 	private JTextField campoTextoGenero;
-	private JTextField campotextoPreco;
 	private Cds novoCd;
 	
 	
@@ -36,7 +40,7 @@ public class TelaCadastroCds extends JInternalFrame {
 	}
 
 
-	public TelaCadastroCds() {
+	public TelaCadastroCds() throws ParseException {
 		
 		//Ação ao mover a janela, voltar aonde estava
 		addComponentListener(new ComponentAdapter() {
@@ -61,8 +65,10 @@ public class TelaCadastroCds extends JInternalFrame {
 		campoTextoGenero = new JTextField();
 		campoTextoGenero.setColumns(10);
 		
-		campotextoPreco = new JTextField();
-		campotextoPreco.setColumns(10);
+		MaskFormatter mascaraPreco = new MaskFormatter("##,##");
+		JFormattedTextField textoFormatadoPreco = new JFormattedTextField(mascaraPreco);
+		
+		
 		
 		
 		//Labels
@@ -74,6 +80,9 @@ public class TelaCadastroCds extends JInternalFrame {
 		
 		JLabel lblPreco = new JLabel("Pre\u00E7o");
 		
+		JLabel lblapenasNumeros = new JLabel("*Apenas Numeros");
+		lblapenasNumeros.setFont(new Font("Tahoma", Font.PLAIN, 9));
+		
 		
 		//Botoes
 		JButton btnCadastrar = new JButton("Cadastrar");
@@ -81,13 +90,18 @@ public class TelaCadastroCds extends JInternalFrame {
 		btnCadastrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
 				
-				setNovoCd (new Cds(campoTextoBanda.getText(), campoTextoAlbum.getText(), campoTextoGenero.getText(), false, false, Float.parseFloat(campotextoPreco.getText())));
+				String preco = textoFormatadoPreco.getText();
+				preco = preco.replace(",", "");
+				
+				
+				
+				setNovoCd (new Cds(campoTextoBanda.getText(), campoTextoAlbum.getText(), campoTextoGenero.getText(), false, false, Float.parseFloat(preco)));
 				
 				
 				campoTextoBanda.setText(null);
 				campoTextoAlbum.setText(null);
 				campoTextoGenero.setText(null);
-				campotextoPreco.setText(null);
+				textoFormatadoPreco.setText(null);
 				
 				//Salvar o Cadastro Do Filme
 				File arquivo;
@@ -112,10 +126,10 @@ public class TelaCadastroCds extends JInternalFrame {
 				} catch (IOException e) {
 					
 					JOptionPane.showMessageDialog(null,"Nao Foi Possivel Salvar");
+				}finally{
+				
+					JOptionPane.showMessageDialog(null,"Cd Cadastrado Com Sucesso!");
 				}
-				
-				JOptionPane.showMessageDialog(null,"Cd Cadastrado Com Sucesso!");
-				
 			}
 		});
 		
@@ -128,6 +142,10 @@ public class TelaCadastroCds extends JInternalFrame {
 				
 			}
 		});
+		
+		
+		
+		
 		
 		
 		
@@ -147,17 +165,22 @@ public class TelaCadastroCds extends JInternalFrame {
 					.addGap(35)
 					.addGroup(layoutTelaCadCds.createParallelGroup(Alignment.LEADING)
 						.addGroup(layoutTelaCadCds.createSequentialGroup()
-							.addGroup(layoutTelaCadCds.createParallelGroup(Alignment.TRAILING, false)
-								.addComponent(campoTextoAlbum, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 159, Short.MAX_VALUE)
-								.addComponent(campoTextoBanda, Alignment.LEADING)
-								.addComponent(campoTextoGenero, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 225, Short.MAX_VALUE)
-								.addComponent(campotextoPreco, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 76, GroupLayout.PREFERRED_SIZE))
-							.addContainerGap(194, Short.MAX_VALUE))
-						.addGroup(layoutTelaCadCds.createSequentialGroup()
-							.addComponent(btnCadastrar)
-							.addPreferredGap(ComponentPlacement.RELATED, 133, Short.MAX_VALUE)
-							.addComponent(btnFechar)
-							.addGap(116))))
+							.addComponent(textoFormatadoPreco, GroupLayout.PREFERRED_SIZE, 39, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(lblapenasNumeros)
+							.addGap(330))
+						.addGroup(layoutTelaCadCds.createParallelGroup(Alignment.LEADING)
+							.addGroup(layoutTelaCadCds.createSequentialGroup()
+								.addGroup(layoutTelaCadCds.createParallelGroup(Alignment.LEADING, false)
+									.addComponent(campoTextoAlbum, GroupLayout.DEFAULT_SIZE, 159, Short.MAX_VALUE)
+									.addComponent(campoTextoBanda)
+									.addComponent(campoTextoGenero, GroupLayout.DEFAULT_SIZE, 225, Short.MAX_VALUE))
+								.addContainerGap(194, Short.MAX_VALUE))
+							.addGroup(layoutTelaCadCds.createSequentialGroup()
+								.addComponent(btnCadastrar)
+								.addPreferredGap(ComponentPlacement.RELATED, 157, Short.MAX_VALUE)
+								.addComponent(btnFechar)
+								.addGap(116)))))
 		);
 		layoutTelaCadCds.setVerticalGroup(
 			layoutTelaCadCds.createParallelGroup(Alignment.LEADING)
@@ -176,8 +199,9 @@ public class TelaCadastroCds extends JInternalFrame {
 						.addComponent(lblNomeDoGenero))
 					.addGap(30)
 					.addGroup(layoutTelaCadCds.createParallelGroup(Alignment.BASELINE)
-						.addComponent(campotextoPreco, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblPreco))
+						.addComponent(lblPreco)
+						.addComponent(textoFormatadoPreco, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblapenasNumeros))
 					.addGap(46)
 					.addGroup(layoutTelaCadCds.createParallelGroup(Alignment.BASELINE)
 						.addComponent(btnCadastrar)

@@ -40,6 +40,7 @@ public class TelaLocadoraAluguel extends JInternalFrame {
 	private int idClienteSelecionado = -1;
 	private int quantidade = 0;
 	private ArrayList < Integer > Ids = new ArrayList < Integer >();
+
 	
 	
 	
@@ -246,11 +247,13 @@ public class TelaLocadoraAluguel extends JInternalFrame {
 		
 		JRadioButton selecaoCd = new JRadioButton("Cd", false);
 		
+		JRadioButton selecaoDevolucao = new JRadioButton("Devolu\u00E7\u00E3o");
+		
 		
 		ButtonGroup botaoDeSelecao = new ButtonGroup();
 		botaoDeSelecao.add(selecaoFilme);
 		botaoDeSelecao.add(selecaoCd);
-		
+		botaoDeSelecao.add(selecaoDevolucao);
 		
 		
 		//Botoes
@@ -272,7 +275,7 @@ public class TelaLocadoraAluguel extends JInternalFrame {
 					teste = nome.equalsIgnoreCase(clientes.get(i).getNome());
 					if( teste == true){
 						
-						textoNomeClienteSelecionado.setText(clientes.get(i).getNome() + " Cpf: " + clientes.get(i).getCpf());
+						textoNomeClienteSelecionado.setText(clientes.get(i).getNome() + " - Cpf: " + clientes.get(i).getCpf() + " - Devendo: " + clientes.get(i).getSaldo() + " R$");
 						lblClienteSelecionado.setVisible(true);
 						textoNomeClienteSelecionado.setVisible(true);
 						setIdClienteSelecionado(i);
@@ -307,6 +310,7 @@ public class TelaLocadoraAluguel extends JInternalFrame {
 		selecaoFilme.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
 				
+				comboBoxOpcoes.removeAllItems();
 				btnBuscarFilmebanda.setEnabled(true);
 				
 				btnBuscarFilmebanda.addActionListener(new ActionListener() {
@@ -324,18 +328,40 @@ public class TelaLocadoraAluguel extends JInternalFrame {
 							teste = nome.equalsIgnoreCase(listaFilmes.get(i).getTitulo());
 							if( teste == true){
 								
-								String verificado;
+								String verificadoAlugado;
+								String verificadoReservado;
 								
-								if(listaFilmes.get(i).isLocado() == true || listaFilmes.get(i).isReservado() == true){
-									verificado = "INDISPONIVEL";
+								if(listaFilmes.get(i).isLocado() == true){
+									verificadoAlugado = "INDISPONIVEL";
 								} else{
-									verificado = "DISPONIVEL";
+									verificadoAlugado = "DISPONIVEL";
+								}
+								
+								if(listaFilmes.get(i).isReservado() == true){
+									verificadoReservado = "RESERVADO";
+								} else{
+									verificadoReservado = "DISPONIVEL";
+								}
+								
+								if(verificadoReservado.equalsIgnoreCase("DISPONIVEL")){
+									comboBoxOpcoes.addItem(listaFilmes.get(i).getTitulo() +" - R$ " + String.valueOf(listaFilmes.get(i).getPreco()) + " - Ano: " + listaFilmes.get(i).getAno() +" - " + verificadoAlugado);
+									setQuantidade(getQuantidade()+1);
+									Ids.add(i);
+								}
+								if(verificadoReservado.equalsIgnoreCase("RESERVADO") && verificadoAlugado.equalsIgnoreCase("DISPONIVEL")){
+									comboBoxOpcoes.addItem(listaFilmes.get(i).getTitulo() +" - R$ " + String.valueOf(listaFilmes.get(i).getPreco()) + " - Ano: " + listaFilmes.get(i).getAno() +" - " + verificadoReservado);
+									setQuantidade(getQuantidade()+1);
+									Ids.add(i);
+									
+								}
+								if(verificadoReservado.equalsIgnoreCase("RESERVADO") && verificadoAlugado.equalsIgnoreCase("INDISPONIVEL")){
+									comboBoxOpcoes.addItem(listaFilmes.get(i).getTitulo() +" - R$ " + String.valueOf(listaFilmes.get(i).getPreco()) + " - Ano: " + listaFilmes.get(i).getAno() +" - " + verificadoAlugado);
+									setQuantidade(getQuantidade()+1);
+									Ids.add(i);
+									
 								}
 								
 								
-								comboBoxOpcoes.addItem(listaFilmes.get(i).getTitulo() +" - R$ " + String.valueOf(listaFilmes.get(i).getPreco()) + " - Ano: " + listaFilmes.get(i).getAno() +" - " + verificado);
-								setQuantidade(getQuantidade()+1);
-								Ids.add(i);
 								
 								
 								
@@ -377,29 +403,42 @@ public class TelaLocadoraAluguel extends JInternalFrame {
 						if(getIdFilmeSelecionado() != -1 && getIdClienteSelecionado() != -1){
 							
 							listaFilmes.get(getIdFilmeSelecionado()).setLocado(true);
+							listaFilmes.get(getIdFilmeSelecionado()).setReservado(false);
 							clientes.get(getIdClienteSelecionado()).setSaldo(listaFilmes.get(getIdFilmeSelecionado()).getPreco());
 							JOptionPane.showMessageDialog(null, "Aluguel Resgistrado com sucesso.\nDevolução: 3 Dias Uteis\nValor a ser pago: R$ " + listaFilmes.get(getIdFilmeSelecionado()).getPreco());
 							
 							//Salvando Alterações Feitas ------
-							File arquivo;
-							FileWriter writer;
-							PrintWriter escrever;
+							File arquivo1, arquivo2;
+							FileWriter writer1, writer2;
+							PrintWriter escrever1, escrever2;
 							
 							try {
-								arquivo = new File ("BancoDeFilmes.txt");
-								writer = new FileWriter(arquivo, false);
-								escrever = new PrintWriter(writer);
+								arquivo1 = new File ("BancoDeFilmes.txt");
+								writer1 = new FileWriter(arquivo1, false);
+								escrever1 = new PrintWriter(writer1);
+								
+								arquivo2 = new File ("BancoDeClientes.txt");
+								writer2 = new FileWriter(arquivo2, false);
+								escrever2 = new PrintWriter(writer2);
+								
+								
 								
 								for(int i = 0; i < listaFilmes.size(); i++){
 									
-									escrever.println(listaFilmes.get(i).gravarArquivo());
+									escrever1.println(listaFilmes.get(i).gravarArquivo());
 									
+								}
+								for(int i = 0; i < clientes.size(); i++){
+									
+									escrever2.println(clientes.get(i).gravarArquivo());
 								}
 							
 								
 								
-								escrever.close();
-								writer.close();
+								escrever1.close();
+								writer1.close();
+								escrever2.close();
+								writer2.close();
 								
 							
 							} catch (FileNotFoundException e) {
@@ -408,7 +447,7 @@ public class TelaLocadoraAluguel extends JInternalFrame {
 								
 							} catch (IOException e) {
 								
-								JOptionPane.showMessageDialog(null,"Nao Foi Possivel Salvar");
+								JOptionPane.showMessageDialog(null,"Nao Foi Possivel Salvar as Alterações");
 							}
 							
 							campoTextCliente.setText(null);
@@ -436,6 +475,7 @@ public class TelaLocadoraAluguel extends JInternalFrame {
 		selecaoCd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
+				comboBoxOpcoes.removeAllItems();
 				btnBuscarFilmebanda.setEnabled(true);
 				
 				btnBuscarFilmebanda.addActionListener(new ActionListener() {
@@ -452,18 +492,40 @@ public class TelaLocadoraAluguel extends JInternalFrame {
 							teste = nome.equalsIgnoreCase(listaCds.get(i).getNomeBanda());
 							if( teste == true){
 								
-								String verificado;
+								String verificadoAlugado;
+								String verificadoReservado;
 								
-								if(listaCds.get(i).isLocado() == true || listaCds.get(i).isReservado() == true){
-									verificado = "INDISPONIVEL";
+								if(listaCds.get(i).isLocado() == true){
+									verificadoAlugado = "INDISPONIVEL";
 								} else{
-									verificado = "DISPONIVEL";
+									verificadoAlugado = "DISPONIVEL";
+								}
+								
+								if(listaCds.get(i).isReservado() == true){
+									verificadoReservado = "RESERVADO";
+								} else{
+									verificadoReservado = "DISPONIVEL";
 								}
 								
 								
-								comboBoxOpcoes.addItem(listaCds.get(i).getNomeBanda() +" - R$ " + String.valueOf(listaCds.get(i).getPreco()) + " - Ano: " + listaFilmes.get(i).getAno() +" - " + verificado);
-								setQuantidade(getQuantidade()+1);
-								Ids.add(i);
+								if(verificadoReservado.equalsIgnoreCase("DISPONIVEL")){
+									comboBoxOpcoes.addItem(listaCds.get(i).getNomeBanda() + " - Album: " + listaCds.get(i).getAlbum() +" - R$ "+ String.valueOf(listaCds.get(i).getPreco()) +" - " + verificadoAlugado);
+									setQuantidade(getQuantidade()+1);
+									Ids.add(i);
+								}
+								if(verificadoReservado.equalsIgnoreCase("RESERVADO") && verificadoAlugado.equalsIgnoreCase("DISPONIVEL")){
+									comboBoxOpcoes.addItem(listaCds.get(i).getNomeBanda() + " - Album: " + listaCds.get(i).getAlbum() +" - R$ "+ String.valueOf(listaCds.get(i).getPreco()) +" - " + verificadoReservado);
+									setQuantidade(getQuantidade()+1);
+									Ids.add(i);
+									
+								}
+								if(verificadoReservado.equalsIgnoreCase("RESERVADO") && verificadoAlugado.equalsIgnoreCase("INDISPONIVEL")){
+									comboBoxOpcoes.addItem(listaCds.get(i).getNomeBanda() + " - Album: " + listaCds.get(i).getAlbum() +" - R$ "+ String.valueOf(listaCds.get(i).getPreco()) +" - " + verificadoAlugado);
+									setQuantidade(getQuantidade()+1);
+									Ids.add(i);
+									
+								}
+								
 								
 								
 							}
@@ -508,6 +570,7 @@ public class TelaLocadoraAluguel extends JInternalFrame {
 						if(getIdCdSelecionado() != -1 && getIdClienteSelecionado() != -1){
 							
 							listaCds.get(getIdCdSelecionado()).setLocado(true);
+							listaCds.get(getIdCdSelecionado()).setReservado(false);
 							clientes.get(getIdClienteSelecionado()).setSaldo(listaCds.get(getIdCdSelecionado()).getPreco());
 							JOptionPane.showMessageDialog(null, "Aluguel Resgistrado com sucesso.\nDevolução: 3 Dias Uteis\nValor a ser pago: R$ " + listaCds.get(getIdCdSelecionado()).getPreco());
 							
@@ -564,6 +627,26 @@ public class TelaLocadoraAluguel extends JInternalFrame {
 		
 		
 		
+		selecaoDevolucao.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				comboBoxOpcoes.removeAllItems();
+				btnBuscarFilmebanda.setEnabled(true);
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+			}
+		});
+		
+		
+		
 		
 		
 		
@@ -598,9 +681,11 @@ public class TelaLocadoraAluguel extends JInternalFrame {
 				.addGroup(groupLayout.createSequentialGroup()
 					.addGap(156)
 					.addComponent(selecaoFilme)
-					.addGap(95)
+					.addGap(43)
 					.addComponent(selecaoCd)
-					.addContainerGap(192, Short.MAX_VALUE))
+					.addGap(41)
+					.addComponent(selecaoDevolucao)
+					.addContainerGap(128, Short.MAX_VALUE))
 				.addGroup(groupLayout.createSequentialGroup()
 					.addContainerGap(262, Short.MAX_VALUE)
 					.addComponent(btnAlugar)
@@ -611,8 +696,7 @@ public class TelaLocadoraAluguel extends JInternalFrame {
 					.addGap(56)
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addComponent(lblNome)
-						.addComponent(lblNomeCliente)
-						.addComponent(lblClienteSelecionado))
+						.addComponent(lblNomeCliente))
 					.addGap(46)
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addGroup(groupLayout.createSequentialGroup()
@@ -622,19 +706,21 @@ public class TelaLocadoraAluguel extends JInternalFrame {
 							.addGroup(groupLayout.createSequentialGroup()
 								.addComponent(btnBuscarCliente)
 								.addContainerGap())
-							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-								.addGroup(groupLayout.createSequentialGroup()
-									.addComponent(textoNomeClienteSelecionado, GroupLayout.PREFERRED_SIZE, 216, GroupLayout.PREFERRED_SIZE)
-									.addContainerGap())
-								.addGroup(groupLayout.createSequentialGroup()
-									.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-										.addComponent(campoTextCliente, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE)
-										.addComponent(campoTextoNome, GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE))
-									.addGap(144))))))
+							.addGroup(groupLayout.createSequentialGroup()
+								.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+									.addComponent(campoTextCliente, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE)
+									.addComponent(campoTextoNome, GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE))
+								.addGap(144)))))
 				.addGroup(groupLayout.createSequentialGroup()
-					.addGap(190)
+					.addGap(85)
 					.addComponent(comboBoxOpcoes, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(313, Short.MAX_VALUE))
+					.addContainerGap(418, Short.MAX_VALUE))
+				.addGroup(groupLayout.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(lblClienteSelecionado)
+					.addGap(27)
+					.addComponent(textoNomeClienteSelecionado, GroupLayout.PREFERRED_SIZE, 332, GroupLayout.PREFERRED_SIZE)
+					.addGap(65))
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
@@ -642,7 +728,8 @@ public class TelaLocadoraAluguel extends JInternalFrame {
 					.addContainerGap()
 					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 						.addComponent(selecaoFilme)
-						.addComponent(selecaoCd))
+						.addComponent(selecaoCd)
+						.addComponent(selecaoDevolucao))
 					.addGap(31)
 					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 						.addComponent(campoTextoNome, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
@@ -654,10 +741,11 @@ public class TelaLocadoraAluguel extends JInternalFrame {
 						.addComponent(campoTextCliente, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(lblNomeCliente))
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(btnBuscarCliente)
-					.addGap(13)
 					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
-						.addComponent(textoNomeClienteSelecionado, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addGroup(groupLayout.createSequentialGroup()
+							.addComponent(btnBuscarCliente)
+							.addGap(13)
+							.addComponent(textoNomeClienteSelecionado, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 						.addComponent(lblClienteSelecionado))
 					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addComponent(comboBoxOpcoes, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
@@ -672,33 +760,5 @@ public class TelaLocadoraAluguel extends JInternalFrame {
 		
 		
 
-	}
-	
-	
-	
-	public Cliente buscarNome(String nome){
-		
-		Cliente clienteBusca = new Cliente();
-		Cliente clienteAchado = new Cliente();
-		
-		int i = 0;
-		int j = clientes.size();
-		
-		clienteBusca = clientes.get(i);
-		
-		for(i = 1; i < j; i++ ){
-		
-			if(clienteBusca.getNome().equals(nome)){
-			
-				clienteAchado = clienteBusca;
-			
-			}
-			
-			clienteBusca = clientes.get(i);
-			
-		}
-		
-		
-		return clienteAchado;
 	}
 }
