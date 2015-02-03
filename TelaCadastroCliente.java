@@ -46,7 +46,7 @@ public class TelaCadastroCliente extends JInternalFrame {
 
 
 	public TelaCadastroCliente() throws ParseException {
-		getContentPane().setFont(new Font("Tahoma", Font.PLAIN, 9));
+		
 		
 		//Ação ao mover a janela, voltar aonde estava
 		addComponentListener(new ComponentAdapter() {

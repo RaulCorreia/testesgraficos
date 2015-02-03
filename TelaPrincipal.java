@@ -23,6 +23,8 @@ import javax.swing.border.EmptyBorder;
 
 
 
+
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
@@ -101,11 +103,15 @@ public class TelaPrincipal extends JFrame {
 		setJMenuBar(menuBar);
 		
 		
+		
+		
+		
 		//Menu Locadora e submenus
 		JMenu menuLocadora = new JMenu("Locadora");
 		menuBar.add(menuLocadora);
 		
 		JMenuItem subMenuAluguel = new JMenuItem("Aluguel");
+		
 		
 		subMenuAluguel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
@@ -133,7 +139,68 @@ public class TelaPrincipal extends JFrame {
 		menuLocadora.add(subMenuAluguel);
 		
 		JMenuItem subMenuReservar = new JMenuItem("Reservar");
+		
+		
+		subMenuReservar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				TelaLocadoraReserva telaReserva;
+				
+				try {
+					telaReserva = new TelaLocadoraReserva();
+					
+					desktopPrincipal.add(telaReserva);
+					
+					telaReserva.setVisible(true);
+					
+				} catch (NumberFormatException | IOException e1) {
+					e1.printStackTrace();
+				}
+				
+				
+				
+				
+				
+			}
+		});
 		menuLocadora.add(subMenuReservar);
+		
+		
+		
+		
+		
+		JMenuItem subMenuDevolucao = new JMenuItem("Devolu\u00E7\u00E3o");
+		subMenuDevolucao.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				TelaLocadoraDevolucao telaDevolucao;
+				
+				try {
+					telaDevolucao = new TelaLocadoraDevolucao();
+					
+					desktopPrincipal.add(telaDevolucao);
+					
+					telaDevolucao.setVisible(true);
+					
+				} catch (NumberFormatException | IOException e1) {
+					
+					e1.printStackTrace();
+				}
+				
+				
+				
+				
+			}
+		});
+		menuLocadora.add(subMenuDevolucao);
+		
+		
+		
+		
+		
+		
+		
+		
 		
 		
 		//Menu Cadastros e submenus
@@ -164,6 +231,9 @@ public class TelaPrincipal extends JFrame {
 		menuCadastros.add(subMenuCadFilmes);
 		
 		
+		
+		
+		
 		JMenuItem subMenuCadCds = new JMenuItem("CDs");
 		subMenuCadCds.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
@@ -186,6 +256,9 @@ public class TelaPrincipal extends JFrame {
 		menuCadastros.add(subMenuCadCds);
 		
 		
+		
+		
+		
 		JMenuItem subMenuCadClientes = new JMenuItem("Clientes");
 		subMenuCadClientes.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
@@ -200,16 +273,24 @@ public class TelaPrincipal extends JFrame {
 					telaCadCliente.setVisible(true);
 				
 				} catch (ParseException e) {
-					// TODO Auto-generated catch block
+					
 					e.printStackTrace();
 				}
 				
-				//setClientes(telaCadCliente.getNovoCliente());
+				
 				
 				
 			}
 		});
 		menuCadastros.add(subMenuCadClientes);
+		
+		
+		
+		
+		
+		
+		
+		
 		
 		
 		//Menu Busca e submenus
@@ -230,15 +311,18 @@ public class TelaPrincipal extends JFrame {
 				telaBuscaFilmes.setVisible(true);
 				
 				} catch (NumberFormatException | IOException e1) {
-					// TODO Auto-generated catch block
+					
 					e1.printStackTrace();
 				}
 				
-				//setTextoBusca(telaBuscaFilmes.getTextoDigitado());
+				
 				
 			}
 		});
 		menuBuscas.add(subMenuBuscaFilmes);
+		
+		
+		
 		
 		JMenuItem subMenuBuscaCds = new JMenuItem("CDs");
 		subMenuBuscaCds.addActionListener(new ActionListener() {
@@ -260,6 +344,8 @@ public class TelaPrincipal extends JFrame {
 			}
 		});
 		menuBuscas.add(subMenuBuscaCds);
+		
+		
 		
 		JMenuItem subMenuBuscaClientes = new JMenuItem("Clientes");
 		subMenuBuscaClientes.addActionListener(new ActionListener() {
@@ -288,6 +374,15 @@ public class TelaPrincipal extends JFrame {
 			}
 		});
 		menuBuscas.add(subMenuBuscaClientes);
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		
 		
 		
@@ -361,8 +456,5 @@ public class TelaPrincipal extends JFrame {
 		
 		return clienteAchado;
 	}
-	
-	
-	
 }
 
