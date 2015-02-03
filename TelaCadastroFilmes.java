@@ -99,7 +99,7 @@ public class TelaCadastroFilmes extends JInternalFrame {
 				String preco = textoFormatadoPreco.getText();
 				String ano = textoFormatadoAno.getText();
 				
-				preco = preco.replace(",", "");
+				preco = preco.replace(",", ".");
 				
 				
 				setNovoFilme(new Filmes(campoTextoTitulo.getText(), campoTextoGenero.getText(), false, false, Float.parseFloat(preco), Integer.parseInt(ano)));

@@ -330,6 +330,7 @@ public class TelaLocadoraAluguel extends JInternalFrame {
 				btnBuscarFilmebanda.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent evt) {
 						
+						comboBoxOpcoes.removeAllItems();
 						String nome = campoTextoNome.getText();
 						int i;
 						boolean teste = false;
@@ -509,6 +510,8 @@ public class TelaLocadoraAluguel extends JInternalFrame {
 				
 				btnBuscarFilmebanda.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent evt) {
+						
+						comboBoxOpcoes.removeAllItems();
 						String nome = campoTextoNome.getText();
 						int i;
 						boolean teste = false;

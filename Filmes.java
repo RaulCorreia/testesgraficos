@@ -33,8 +33,12 @@ public class Filmes extends Produtos {
 	}
 
 	public void setAno(int ano) {
+		if (ano > 1900){
+			this.ano = ano;
+		} else{
+			this.ano = 2015;
+		}
 		
-		this.ano = ano;
 				
 		
 	}

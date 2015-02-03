@@ -91,7 +91,7 @@ public class TelaCadastroCds extends JInternalFrame {
 			public void actionPerformed(ActionEvent evt) {
 				
 				String preco = textoFormatadoPreco.getText();
-				preco = preco.replace(",", "");
+				preco = preco.replace(",", ".");
 				
 				
 				

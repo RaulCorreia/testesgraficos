@@ -231,6 +231,7 @@ public class TelaLocadoraReserva extends JInternalFrame {
 				btnProcurar.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent evt) {
 						
+						comboBoxOpcoes.removeAllItems();
 						String nome = campoTextoNome.getText();
 						int i;
 						boolean teste = false;
@@ -395,6 +396,8 @@ public class TelaLocadoraReserva extends JInternalFrame {
 				
 				btnProcurar.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent evt) {
+						
+						comboBoxOpcoes.removeAllItems();
 						String nome = campoTextoNome.getText();
 						int i;
 						boolean teste = false;

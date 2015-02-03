@@ -33,19 +33,31 @@ public class Cliente {
 		return nome;
 	}
 	public void setNome(String nome) {
+		
 		this.nome = nome;
 	}
 	public String getCpf() {
 		return cpf;
 	}
 	public void setCpf(String cpf) {
-		this.cpf = cpf;
+		
+		if(cpf.isEmpty() == false){
+			this.cpf = cpf;
+		} else{
+			cpf = "00000000000";
+		}
+		
 	}
 	public float getSaldo() {
 		return saldo;
 	}
 	public void setSaldo(float saldo) {
-		this.saldo = saldo;
+		if (saldo > 0){
+			this.saldo = saldo;
+		} else{
+			this.saldo = 0;
+		}
+		
 	}	
 	
 	public String getTelefone() {
@@ -53,7 +65,12 @@ public class Cliente {
 	}
 
 	public void setTelefone(String telefone) {
-		this.telefone = telefone;
+		if(telefone.isEmpty() == false){
+			this.telefone = telefone;
+		}else{
+			this.telefone = "0000000000";
+		}
+		
 	}
 	
 	public String gravarArquivo(){
